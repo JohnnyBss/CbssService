@@ -7,5 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper extends BaseMapper<UserEntity> {
     UserEntity searchByCellphone(String cellphone);
 
+    UserEntity search4Login(String cellphone, String password);
+
     int changePassword(UserEntity entity);
 }

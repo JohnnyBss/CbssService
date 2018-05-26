@@ -26,6 +26,11 @@ public class UserController {
         return serviceImpl.findByCellphone(cellphone);
     }
 
+    @RequestMapping(value = "/api/user/login/{cellphone}/{password}", method = RequestMethod.GET)
+    public UnifiedResponse get4Module(@PathVariable("cellphone") String cellphone, @PathVariable("password") String password){
+        return serviceImpl.find4Login(cellphone, password);
+    }
+
     @RequestMapping(value="/api/user", method = RequestMethod.POST)
     public UnifiedResponse post(@RequestBody UserDTO dto){
         return serviceImpl.add(dto);

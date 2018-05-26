@@ -34,6 +34,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UnifiedResponse find4Login(String cellphone, String password) {
+        try {
+            UserEntity entity =  userMapper.search4Login(cellphone, password);
+            UserVO model = convertEntityToVo(entity);
+            return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
+        } catch (Exception ex) {
+            LogUtils.processExceptionLog(ex);
+            return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
+        }
+    }
+
+    @Override
     public UnifiedResponse changePassword(UserDTO dto) {
         try {
             UserEntity entity = convertDtoToEntity(dto);

@@ -8,5 +8,7 @@ import com.johnny.store.vo.UserVO;
 public interface UserService extends BaseService<UserDTO, UserVO, UserEntity> {
     UnifiedResponse findByCellphone(String cellphone);
 
+    UnifiedResponse find4Login(String cellphone, String password);
+
     UnifiedResponse changePassword(UserDTO dto);
 }

@@ -64,6 +64,22 @@
     FROM `User`
     WHERE Cellphone = #{cellphone,jdbcType=NVARCHAR}
   </select>
+  <select id="search4Login" resultMap="BaseResultMap">
+    SELECT
+      UserID,
+      BankID,
+      BranchID,
+      UserName,
+      Cellphone,
+      Password,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `User`
+    WHERE Cellphone = #{arg0,jdbcType=NVARCHAR}
+    AND Password = #{arg1,jdbcType=NVARCHAR}
+  </select>
   <insert id="insert" parameterType="com.johnny.store.entity.UserEntity" >
     INSERT INTO `User` (
       BankID,

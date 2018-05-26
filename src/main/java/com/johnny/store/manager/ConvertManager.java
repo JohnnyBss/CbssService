@@ -175,6 +175,24 @@ public class ConvertManager {
         return newsVO;
     }
 
+    public static UserVO convertEntityToVO(UserEntity entity){
+        if(entity == null){
+            return null;
+        }
+        UserVO userVO = new UserVO();
+        userVO.setBankID(entity.getBankID());
+        userVO.setBranchID(entity.getBranchID());
+        userVO.setUserID(entity.getUserID());
+        userVO.setUserName(entity.getUserName());
+        userVO.setCellphone(entity.getCellphone());
+        userVO.setInUser(entity.getInUser());
+        userVO.setInDate(entity.getInDate());
+        userVO.setLastEditUser(entity.getLastEditUser());
+        userVO.setLastEditDate(entity.getLastEditDate());
+
+        return userVO;
+    }
+
     private static List<NewsContentVO> convertEntityToVO(List<NewsContentEntity> entityList){
         if(entityList.isEmpty()){
             return null;
@@ -194,6 +212,7 @@ public class ConvertManager {
         }
         return newsContentList;
     }
+
 
     public static BankEntity convertDtoToEntity(BankDTO dto){
         BankEntity entity = new BankEntity();
@@ -298,5 +317,18 @@ public class ConvertManager {
         entity.setInUser(dto.getLoginUser());
         entity.setLastEditUser(dto.getLoginUser());
         return entity;
+    }
+
+    public static UserEntity convertDtoToEntity(UserDTO dto){
+        UserEntity userEntity = new UserEntity();
+        userEntity.setBankID(dto.getBankID());
+        userEntity.setBranchID(dto.getBranchID());
+        userEntity.setUserID(dto.getUserID());
+        userEntity.setUserName(dto.getUserName());
+        userEntity.setPassword(dto.getPassword());
+        userEntity.setCellphone(dto.getCellphone());
+        userEntity.setInUser(dto.getLoginUser());
+        userEntity.setLastEditUser(dto.getLoginUser());
+        return userEntity;
     }
 }

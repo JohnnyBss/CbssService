@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johnny.store.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.johnny.store.entity.UserEntity" >
+    <id column="UserID" property="userID" jdbcType="INTEGER" />
+    <result column="BankID" property="bankID" jdbcType="INTEGER" />
+    <result column="BranchID" property="branchID" jdbcType="INTEGER" />
+    <result column="UserName" property="userName" jdbcType="VARCHAR" />
+    <result column="Cellphone" property="cellphone" jdbcType="VARCHAR" />
+    <result column="Password" property="password" jdbcType="VARCHAR" />
+    <result column="InUser" property="inUser" jdbcType="VARCHAR" />
+    <result column="InDate" property="inDate" jdbcType="TIMESTAMP" />
+    <result column="LastEditUser" property="lastEditUser" jdbcType="VARCHAR" />
+    <result column="LastEditDate" property="lastEditDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="searchTotalCount" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1) AS TotalCount
+    FROM `User`;
+  </select>
+  <select id="searchList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+      UserID,
+      BankID,
+      BranchID,
+      UserName,
+      Cellphone,
+      Password,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `User`
+    ORDER BY InUser DESC
+    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
+  </select>
+  <select id="search" resultMap="BaseResultMap">
+    SELECT
+      UserID,
+      BankID,
+      BranchID,
+      UserName,
+      Cellphone,
+      Password,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `User`
+    WHERE UserID = #{userID,jdbcType=INTEGER}
+    </select>
+  <select id="searchByCellphone" resultMap="BaseResultMap">
+    SELECT
+      UserID,
+      BankID,
+      BranchID,
+      UserName,
+      Cellphone,
+      Password,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `User`
+    WHERE Cellphone = #{cellphone,jdbcType=NVARCHAR}
+  </select>
+  <insert id="insert" parameterType="com.johnny.store.entity.UserEntity" >
+    INSERT INTO `User` (
+      BankID,
+      BranchID,
+      UserName,
+      Cellphone,
+      Password,
+      InUser,
+      LastEditUser
+    )
+    VALUES (
+      #{bankID, jdbcType=INTEGER},
+      #{branchID, jdbcType=INTEGER},
+      #{userName, jdbcType=VARCHAR},
+      #{cellphone, jdbcType=VARCHAR},
+      #{password, jdbcType=VARCHAR},
+      #{inUser, jdbcType=VARCHAR},
+      #{lastEditUser, jdbcType=VARCHAR}
+    )
+  </insert>
+  <update id="update" parameterType="com.johnny.store.entity.UserEntity" >
+    UPDATE `User` SET
+      UserName = #{userName,jdbcType=NVARCHAR},
+      Cellphone = #{cellphone,jdbcType=NVARCHAR},
+      LastEditUser = #{lastEditUser,jdbcType=VARCHAR}
+    WHERE UserID = #{userID,jdbcType=INTEGER}
+  </update>
+  <update id="changePassword" parameterType="com.johnny.store.entity.UserEntity" >
+    UPDATE `User` SET
+      Password = #{password,jdbcType=NVARCHAR},
+      LastEditUser = #{lastEditUser,jdbcType=VARCHAR}
+    WHERE UserID = #{userID,jdbcType=INTEGER}
+  </update>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    DELETE FROM `User`
+    WHERE UserID = #{id,jdbcType=INTEGER}
+  </delete>
+</mapper>

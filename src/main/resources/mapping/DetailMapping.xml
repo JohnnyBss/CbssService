@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johnny.store.mapper.DetailMapper" >
+  <resultMap id="BaseResultMap" type="com.johnny.store.entity.DetailEntity" >
+    <id column="DetailID" property="detailID" jdbcType="INTEGER" />
+    <result column="BankID" property="bankID" jdbcType="INTEGER" />
+    <result column="BranchID" property="branchID" jdbcType="INTEGER" />
+    <result column="ItemID" property="itemID" jdbcType="INTEGER" />
+    <result column="Sequence" property="sequence" jdbcType="INTEGER" />
+    <result column="Animation" property="animation" jdbcType="VARCHAR" />
+    <result column="ContentType" property="contentType" jdbcType="VARCHAR" />
+    <result column="Content" property="content" jdbcType="VARCHAR" />
+    <result column="TextMapDetail" property="textMapDetail" jdbcType="INTEGER" />
+    <result column="Year" property="year" jdbcType="INTEGER" />
+    <result column="Quarter" property="quarter" jdbcType="INTEGER" />
+    <result column="InUser" property="inUser" jdbcType="VARCHAR" />
+    <result column="InDate" property="inDate" jdbcType="TIMESTAMP" />
+    <result column="LastEditUser" property="lastEditUser" jdbcType="VARCHAR" />
+    <result column="LastEditDate" property="lastEditDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="searchTotalCount" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1) AS TotalCount
+    FROM `Detail`;
+  </select>
+  <select id="searchList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+      DetailID,
+      BankID,
+      BranchID,
+      ItemID,
+      Sequence,
+      Animation,
+      ContentType,
+      Content,
+      TextMapDetail,
+      Year,
+      Quarter,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `Detail`
+    ORDER BY InDate DESC
+    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
+  </select>
+  <select id="search" resultMap="BaseResultMap">
+    SELECT
+      DetailID,
+      BankID,
+      BranchID,
+      ItemID,
+      Sequence,
+      Animation,
+      ContentType,
+      Content,
+      TextMapDetail,
+      Year,
+      Quarter,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `Detail`
+    WHERE DetailID = #{detailID,jdbcType=INTEGER}
+  </select>
+  <select id="searchImageMemo" resultMap="BaseResultMap">
+    SELECT
+      DetailID,
+      BankID,
+      BranchID,
+      ItemID,
+      Sequence,
+      Animation,
+      ContentType,
+      Content,
+      TextMapDetail,
+      Year,
+      Quarter,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `Detail`
+    WHERE BankID = #{arg0,jdbcType=INTEGER}
+      AND BranchID = #{arg1,jdbcType=INTEGER}
+      AND ItemID = #{arg2,jdbcType=INTEGER}
+      AND TextMapDetail = #{arg3,jdbcType=INTEGER}
+  </select>
+  <select id="searchList4Item" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+      DetailID,
+      BankID,
+      BranchID,
+      ItemID,
+      Sequence,
+      Animation,
+      ContentType,
+      Content,
+      TextMapDetail,
+      Year,
+      Quarter,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `Detail`
+    WHERE BankID = #{arg0,jdbcType=INTEGER}
+      AND BranchID = #{arg1,jdbcType=INTEGER}
+      AND ItemID = #{arg2,jdbcType=INTEGER}
+      AND Year = #{arg3,jdbcType=INTEGER}
+      AND Quarter = #{arg4,jdbcType=INTEGER};
+  </select>
+
+  <insert id="insert" parameterType="com.johnny.store.entity.DetailEntity" >
+    INSERT INTO `Detail` (
+      BankID,
+      BranchID,
+      ItemID,
+      Sequence,
+      Animation,
+      ContentType,
+      Content,
+      TextMapDetail,
+      Year,
+      Quarter,
+      InUser,
+      LastEditUser
+    )
+    VALUES (
+      #{bankID, jdbcType=INTEGER},
+      #{branchID, jdbcType=INTEGER},
+      #{itemID, jdbcType=INTEGER},
+      #{sequence, jdbcType=INTEGER},
+      #{animation, jdbcType=VARCHAR},
+      #{contentType, jdbcType=VARCHAR},
+      #{content, jdbcType=VARCHAR},
+      #{textMapDetail, jdbcType=INTEGER},
+      #{year, jdbcType=INTEGER},
+      #{quarter, jdbcType=INTEGER},
+      #{inUser, jdbcType=VARCHAR},
+      #{lastEditUser, jdbcType=VARCHAR}
+    )
+  </insert>
+  <delete id="deleteAll" parameterType="java.lang.Integer" >
+    DELETE FROM `Detail`
+    WHERE BankID = #{arg0,jdbcType=INTEGER}
+      AND BranchID = #{arg1,jdbcType=INTEGER}
+      AND ItemID = #{arg2,jdbcType=INTEGER}
+      AND Year = #{arg3,jdbcType=INTEGER}
+      AND Quarter = #{arg4,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteImageMemo" parameterType="java.lang.Integer" >
+    DELETE FROM `Detail`
+    WHERE BankID = #{arg0,jdbcType=INTEGER}
+      AND BranchID = #{arg1,jdbcType=INTEGER}
+      AND ItemID = #{arg2,jdbcType=INTEGER}
+      AND TextMapDetail = #{arg3,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteImage" parameterType="java.lang.Integer" >
+    DELETE FROM `Detail`
+    WHERE BankID = #{arg0,jdbcType=INTEGER}
+      AND BranchID = #{arg1,jdbcType=INTEGER}
+      AND ItemID = #{arg2,jdbcType=INTEGER}
+      AND (DetailID = #{arg3,jdbcType=INTEGER} OR TextMapDetail = #{arg3,jdbcType=INTEGER})
+  </delete>
+
+</mapper>

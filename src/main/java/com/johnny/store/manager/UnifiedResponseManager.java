@@ -3,10 +3,9 @@ package com.johnny.store.manager;
 import com.johnny.store.common.LogUtils;
 import com.johnny.store.config.ResponseSetting;
 import com.johnny.store.constant.ResponseCodeConsts;
-import com.johnny.store.dto.OrderHistoryResponse;
-import com.johnny.store.dto.UnifiedResponse;
 import com.johnny.store.enums.ResponseOptionEnum;
 import com.johnny.store.enums.ResponseTypeEnum;
+import com.johnny.store.vo.UnifiedResponse;
 
 /**
  * 统一返回对象
@@ -65,27 +64,6 @@ public class UnifiedResponseManager {
         }catch (Exception ex){
             LogUtils.processExceptionLog(ex);
             return buildErrorResponse(ResponseCodeConsts.BuildResponseException);
-        }
-    }
-
-    public static <T> OrderHistoryResponse buildSuccessResponse(int orderCount, int toPayOrderCount, int toReceiveOrderCount, int toReviewOrderCount, T data){
-        try{
-            OrderHistoryResponse<T> unifiedResponse = new OrderHistoryResponse<>();
-            ResponseSetting responseSetting = ConfigManager.getResponseSetting(ResponseCodeConsts.SUCCESS);
-            unifiedResponse.setResponseCode(responseSetting.getResponseCode());
-            unifiedResponse.setResponseMessage(responseSetting.getResponseMessage());
-            unifiedResponse.setResult(responseSetting.isResult());
-            unifiedResponse.setResponseType(responseSetting.getResponseType());
-            unifiedResponse.setResponseOption(responseSetting.getResponseOption());
-            unifiedResponse.setTotalCount(orderCount);
-            unifiedResponse.setToPayOrderCount(toPayOrderCount);
-            unifiedResponse.setToReceiveOrderCount(toReceiveOrderCount);
-            unifiedResponse.setToReviewOrderCount(toReviewOrderCount);
-            unifiedResponse.setResponseData(data);
-            return unifiedResponse;
-        }catch (Exception ex){
-            LogUtils.processExceptionLog(ex);
-            return buildErrorOrderHistoryResponse(ResponseCodeConsts.BuildResponseException);
         }
     }
 
@@ -152,14 +130,4 @@ public class UnifiedResponseManager {
         return unifiedResponse;
     }
 
-    public static <T> OrderHistoryResponse buildErrorOrderHistoryResponse(String responseCode){
-        OrderHistoryResponse<T> unifiedResponse = new OrderHistoryResponse<>();
-        unifiedResponse.setResponseCode(responseCode);
-        unifiedResponse.setResponseMessage("build unified response exception");
-        unifiedResponse.setResult(false);
-        unifiedResponse.setResponseType(ResponseTypeEnum.Exception);
-        unifiedResponse.setResponseOption(ResponseOptionEnum.Admin);
-        unifiedResponse.setResponseData(null);
-        return unifiedResponse;
-    }
 }

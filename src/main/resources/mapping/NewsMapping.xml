@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johnny.store.mapper.NewsMapper" >
+  <resultMap id="BaseResultMap" type="com.johnny.store.entity.NewsEntity" >
+    <id column="NewsID" property="newsID" jdbcType="INTEGER" />
+    <result column="BankID" property="bankID" jdbcType="INTEGER" />
+    <result column="BranchID" property="branchID" jdbcType="INTEGER" />
+    <result column="ThumbnailUrl" property="thumbnailUrl" jdbcType="VARCHAR" />
+    <result column="NewsTitle" property="newsTitle" jdbcType="VARCHAR" />
+    <result column="NewsDate" property="newsDate" jdbcType="VARCHAR" />
+    <result column="Status" property="status" jdbcType="VARCHAR" />
+    <result column="InUser" property="inUser" jdbcType="VARCHAR" />
+    <result column="InDate" property="inDate" jdbcType="TIMESTAMP" />
+    <result column="LastEditUser" property="lastEditUser" jdbcType="VARCHAR" />
+    <result column="LastEditDate" property="lastEditDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="searchTotalCount" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1) AS TotalCount
+    FROM News;
+  </select>
+  <select id="searchList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+      NewsID,
+      BankID,
+      BranchID,
+      ThumbnailUrl,
+      NewsTitle,
+      NewsDate,
+      Status,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM News
+    ORDER BY InDate DESC
+    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
+  </select>
+  <select id="search" resultMap="BaseResultMap">
+    SELECT
+      NewsID,
+      BankID,
+      BranchID,
+      ThumbnailUrl,
+      NewsTitle,
+      NewsDate,
+      Status,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM News
+    WHERE NewsID = #{newsID,jdbcType=INTEGER}
+  </select>
+  <select id="searchTotalCount4Bank" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1) AS TotalCount
+    FROM News
+    WHERE BankID = #{arg0,jdbcType=INTEGER}
+    <if test="arg1 != 0">
+      AND BranchID=#{arg1,jdbcType=INTEGER}
+    </if>;
+  </select>
+  <select id="searchList4Bank" resultMap="BaseResultMap">
+    SELECT
+      NewsID,
+      BankID,
+      BranchID,
+      ThumbnailUrl,
+      NewsTitle,
+      NewsDate,
+      Status,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM News
+    WHERE BankID = #{arg2,jdbcType=INTEGER}
+    <if test="arg3 != 0">
+      AND BranchID=#{arg3,jdbcType=INTEGER}
+    </if>
+    ORDER BY InDate DESC
+    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
+    </select>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="newsID" parameterType="com.johnny.store.entity.NewsEntity" >
+    INSERT INTO News (
+      BankID,
+      BranchID,
+      ThumbnailUrl,
+      NewsTitle,
+      NewsDate,
+      Status,
+      InUser,
+      LastEditUser
+    )
+    VALUES (
+      #{bankID, jdbcType=INTEGER},
+      #{branchID, jdbcType=INTEGER},
+      #{thumbnailUrl, jdbcType=VARCHAR},
+      #{newsTitle, jdbcType=VARCHAR},
+      #{newsDate, jdbcType=VARCHAR},
+      #{status, jdbcType=VARCHAR},
+      #{inUser, jdbcType=VARCHAR},
+      #{lastEditUser, jdbcType=VARCHAR}
+    )
+  </insert>
+  <update id="update" parameterType="com.johnny.store.entity.NewsEntity" >
+    UPDATE News SET
+      ThumbnailUrl = #{thumbnailUrl,jdbcType=VARCHAR},
+      NewsTitle = #{newsTitle,jdbcType=VARCHAR},
+      NewsDate = #{newsDate,jdbcType=VARCHAR},
+      Status = #{status,jdbcType=VARCHAR},
+      LastEditUser = #{lastEditUser,jdbcType=VARCHAR}
+    WHERE NewsID = #{newsID,jdbcType=INTEGER}
+  </update>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    DELETE FROM News
+    WHERE NewsID = #{id,jdbcType=INTEGER}
+  </delete>
+</mapper>

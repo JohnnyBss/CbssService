@@ -1,16 +1,14 @@
 package com.johnny.store.service;
 
 import com.johnny.store.dto.ItemDTO;
-import com.johnny.store.dto.UnifiedResponse;
+import com.johnny.store.entity.ItemEntity;
+import com.johnny.store.vo.ItemVO;
+import com.johnny.store.vo.UnifiedResponse;
 
-public interface ItemService extends BaseService {
-    UnifiedResponse find(String itemCode);
+public interface ItemService extends BaseService<ItemDTO, ItemVO, ItemEntity> {
+    UnifiedResponse findListItems(int bankID, int branchID);
 
-    UnifiedResponse find(int brandID, int categoryID, int subCategoryID, int itemGroupID, int seriesID, int colorID, int sizeID);
+    UnifiedResponse saveDetailItem(ItemDTO dto);
 
-    UnifiedResponse findSalesList(int pageNumber, int pageSize, int brandID, int categoryID, int subCategoryID);
 
-    UnifiedResponse findListByItemName(int pageNumber, int pageSize, String itemName);
-
-    UnifiedResponse changeItemToShowInList(ItemDTO itemDTO);
 }

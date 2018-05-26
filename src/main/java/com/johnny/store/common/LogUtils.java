@@ -31,7 +31,7 @@ public class LogUtils {
             systemLogSetting.setErrorMessage(ex.getMessage());
             systemLogSetting.setErrorDetail(getStackTrace(ex));
 
-            String log4Json = JsonUtils.getJsonStr(systemLogSetting);
+            String log4Json = JsonUtils.serializeToJson(systemLogSetting);
             FileUtils.createFolder(logDir);
             FileUtils.createFile(logPath, log4Json);
         }catch (Exception e){
@@ -60,7 +60,7 @@ public class LogUtils {
             systemLogSetting.setErrorMessage(ex.getMessage());
             systemLogSetting.setErrorDetail(getStackTrace(ex));
 
-            String log4Json = JsonUtils.getJsonStr(systemLogSetting);
+            String log4Json = JsonUtils.serializeToJson(systemLogSetting);
             FileUtils.createFolder(logDir);
             FileUtils.createFile(logPath, log4Json);
         }catch (Exception e){

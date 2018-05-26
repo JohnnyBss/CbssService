@@ -288,10 +288,10 @@
     <void method="add">
       <object class="com.johnny.store.config.ResponseSetting">
         <void property="responseCode">
-          <string>3E99</string>r
+          <string>3E99</string>
         </void>
         <void property="responseMessage">
-          <string>Service occured Unknown exception</string>
+          <string>Service occurred Unknown exception</string>
         </void>
         <void property="responseOption">
           <object class="java.lang.Enum" method="valueOf">

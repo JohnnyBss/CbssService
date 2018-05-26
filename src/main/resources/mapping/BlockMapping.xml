@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johnny.store.mapper.BlockMapper" >
+  <resultMap id="BaseResultMap" type="com.johnny.store.entity.BlockEntity" >
+    <id column="BlockID" property="blockID" jdbcType="INTEGER" />
+    <result column="BlockName" property="blockName" jdbcType="NVARCHAR" />
+    <result column="ModuleID" property="moduleID" jdbcType="INTEGER" />
+    <result column="InUser" property="inUser" jdbcType="VARCHAR" />
+    <result column="InDate" property="inDate" jdbcType="TIMESTAMP" />
+    <result column="LastEditUser" property="lastEditUser" jdbcType="VARCHAR" />
+    <result column="LastEditDate" property="lastEditDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="searchTotalCount" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1) AS TotalCount
+    FROM `Block`;
+  </select>
+  <select id="searchList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+      BlockID,
+      BlockName,
+      ModuleID,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `Block`
+    ORDER BY BlockID
+    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
+  </select>
+  <select id="search" resultMap="BaseResultMap">
+    SELECT
+      BlockID,
+      BlockName,
+      ModuleID,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `Block`
+    WHERE BlockID = #{blockID,jdbcType=INTEGER}
+    </select>
+  <select id="searchByName" resultMap="BaseResultMap">
+    SELECT
+      BlockID,
+      BlockName,
+      ModuleID,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `Block`
+    WHERE BlockName = #{blockName,jdbcType=NVARCHAR}
+  </select>
+  <select id="searchTotalCountOfModule" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1) AS TotalCount
+    FROM `Block`
+    WHERE ModuleID = #{moduleID,jdbcType=NVARCHAR};
+  </select>
+  <select id="searchListOfModule" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+      BlockID,
+      BlockName,
+      ModuleID,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `Block`
+    WHERE ModuleID = #{arg2,jdbcType=NVARCHAR}
+    ORDER BY BlockID
+    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
+  </select>
+  <insert id="insert" parameterType="com.johnny.store.entity.BlockEntity" >
+    INSERT INTO `Block` (
+      BlockName,
+      ModuleID,
+      InUser,
+      LastEditUser
+    )
+    VALUES (
+      #{blockName, jdbcType=VARCHAR},
+      #{moduleID, jdbcType=INTEGER},
+      #{inUser, jdbcType=VARCHAR},
+      #{lastEditUser, jdbcType=VARCHAR}
+    )
+  </insert>
+  <update id="update" parameterType="com.johnny.store.entity.BlockEntity" >
+    UPDATE `Block` SET
+      ModuleID = #{moduleID,jdbcType=INTEGER},
+      BlockName = #{blockName,jdbcType=NVARCHAR},
+      LastEditUser = #{lastEditUser,jdbcType=VARCHAR}
+    WHERE BlockID = #{blockID,jdbcType=INTEGER}
+  </update>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    DELETE FROM `Block`
+    WHERE BlockID = #{id,jdbcType=INTEGER}
+  </delete>
+</mapper>

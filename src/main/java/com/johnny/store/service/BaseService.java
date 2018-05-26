@@ -1,8 +1,8 @@
 package com.johnny.store.service;
 
-import com.johnny.store.dto.UnifiedResponse;
+import com.johnny.store.vo.UnifiedResponse;
 
-public interface BaseService<T> {
+public interface BaseService<T, V, E> {
     UnifiedResponse findList(int pageNumber, int pageSize);
 
     UnifiedResponse find(int id);
@@ -14,4 +14,8 @@ public interface BaseService<T> {
     UnifiedResponse change(T dto);
 
     UnifiedResponse delete(int id);
+
+    V convertEntityToVo(E entity);
+
+    E convertDtoToEntity(T dto);
 }

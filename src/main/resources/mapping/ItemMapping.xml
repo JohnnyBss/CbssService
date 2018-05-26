@@ -3,710 +3,105 @@
 <mapper namespace="com.johnny.store.mapper.ItemMapper" >
   <resultMap id="BaseResultMap" type="com.johnny.store.entity.ItemEntity" >
     <id column="ItemID" property="itemID" jdbcType="INTEGER" />
-    <result column="BrandID" property="brandID" jdbcType="INTEGER" />
-    <result column="BrandCN" property="brandCN" jdbcType="NVARCHAR" />
-    <result column="BrandEN" property="brandEN" jdbcType="VARCHAR" />
-    <result column="CategoryID" property="categoryID" jdbcType="INTEGER" />
-    <result column="CategoryCN" property="categoryCN" jdbcType="NVARCHAR" />
-    <result column="CategoryEN" property="categoryEN" jdbcType="VARCHAR" />
-    <result column="SubCategoryID" property="subCategoryID" jdbcType="INTEGER" />
-    <result column="SubCategoryCN" property="subCategoryCN" jdbcType="NVARCHAR" />
-    <result column="SubCategoryEN" property="subCategoryEN" jdbcType="VARCHAR" />
-    <result column="ItemGroupID" property="itemGroupID" jdbcType="INTEGER" />
-    <result column="ItemGroupCN" property="itemGroupCN" jdbcType="NVARCHAR" />
-    <result column="ItemGroupEN" property="itemGroupEN" jdbcType="VARCHAR" />
-    <result column="SeriesID" property="seriesID" jdbcType="INTEGER" />
-    <result column="ItemSeriesCN" property="itemSeriesCN" jdbcType="NVARCHAR" />
-    <result column="ItemSeriesEN" property="itemSeriesEN" jdbcType="VARCHAR" />
-    <result column="ItemCode" property="itemCode" jdbcType="VARCHAR" />
-    <result column="UnitPrice4RMB" property="unitPrice4RMB" jdbcType="DECIMAL" />
-    <result column="PromotionPrice4RMB" property="promotionPrice4RMB" jdbcType="DECIMAL" />
-    <result column="UnitPrice4USD" property="unitPrice4USD" jdbcType="DECIMAL" />
-    <result column="PromotionPrice4USD" property="promotionPrice4USD" jdbcType="DECIMAL" />
-    <result column="Rate" property="rate" jdbcType="FLOAT" />
-    <result column="ColorID" property="colorID" jdbcType="INTEGER" />
-    <result column="ColorCN" property="colorCN" jdbcType="NVARCHAR" />
-    <result column="ColorEN" property="colorEN" jdbcType="VARCHAR" />
-    <result column="SizeID" property="sizeID" jdbcType="INTEGER" />
-    <result column="SizeCN" property="sizeCN" jdbcType="NVARCHAR" />
-    <result column="SizeEN" property="sizeEN" jdbcType="VARCHAR" />
-    <result column="ItemMaterial" property="itemMaterial" jdbcType="INTEGER" />
-    <result column="MadeInID" property="madeInID" jdbcType="INTEGER" />
-    <result column="CountryNameCN" property="madeInCN" jdbcType="NVARCHAR" />
-    <result column="CountryNameEN" property="madeInEN" jdbcType="VARCHAR" />
-    <result column="ItemLength" property="itemLength" jdbcType="VARCHAR" />
-    <result column="AdjustLength" property="adjustLength" jdbcType="VARCHAR" />
-    <result column="SuitablePetCN" property="suitablePetCN" jdbcType="VARCHAR" />
-    <result column="SuitablePetEN" property="suitablePetEN" jdbcType="VARCHAR" />
-    <result column="ItemShortDescriptionCN" property="itemShortDescriptionCN" jdbcType="VARCHAR" />
-    <result column="ItemShortDescriptionEN" property="itemShortDescriptionEN" jdbcType="VARCHAR" />
-    <result column="ItemDescriptionCN" property="itemDescriptionCN" jdbcType="VARCHAR" />
-    <result column="ItemDescriptionEN" property="itemDescriptionEN" jdbcType="VARCHAR" />
-    <result column="ItemStatus" property="itemStatus" jdbcType="VARCHAR" />
-    <result column="ItemStatusText" property="itemStatusText" jdbcType="VARCHAR" />
-    <result column="ShowInListPage" property="showInListPage" jdbcType="BOOLEAN" />
+    <result column="ItemName" property="itemName" jdbcType="NVARCHAR" />
+    <result column="BankID" property="bankID" jdbcType="INTEGER" />
+    <result column="BranchID" property="branchID" jdbcType="INTEGER" />
+    <result column="ParentItemID" property="parentItemID" jdbcType="INTEGER" />
+    <result column="ItemType" property="itemType" jdbcType="VARCHAR" />
     <result column="InUser" property="inUser" jdbcType="VARCHAR" />
     <result column="InDate" property="inDate" jdbcType="TIMESTAMP" />
     <result column="LastEditUser" property="lastEditUser" jdbcType="VARCHAR" />
     <result column="LastEditDate" property="lastEditDate" jdbcType="TIMESTAMP" />
   </resultMap>
-  <select id="searchTotalCount" resultType="java.lang.Integer">
+
+  <select id="searchByName" resultMap="BaseResultMap">
     SELECT
-    COUNT(1) AS TotalCount
-    FROM Item;
+      ItemID,
+      ItemName,
+      BankID,
+      BranchID,
+      ParentItemID,
+      ItemType,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `Item`
+    WHERE ItemName = #{itemName,jdbcType=NVARCHAR}
   </select>
-  <select id="searchList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="searchListOfBranch" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT
-      A.ItemID,
-      A.BrandID,
-      B.BrandCN,
-      B.BrandEN,
-      A.CategoryID,
-      C.CategoryCN,
-      C.CategoryEN,
-      A.SubCategoryID,
-      D.SubCategoryCN,
-      D.SubCategoryEN,
-      A.ItemGroupID,
-      J.ItemGroupCN,
-      J.ItemGroupEN,
-      A.SeriesID,
-      A.ItemCode,
-      E.ItemSeriesCN,
-      E.ItemSeriesEN,
-      A.UnitPrice4RMB,
-      A.PromotionPrice4RMB,
-      A.UnitPrice4USD,
-      A.PromotionPrice4USD,
-      A.Rate,
-      A.ColorID,
-      F.ColorCN,
-      F.ColorEN,
-      A.SizeID,
-      G.SizeCN,
-      G.SizeEN,
-      A.ItemMaterial,
-      A.MadeInID,
-      I.CountryNameCN,
-      I.CountryNameEN,
-      A.ItemLength,
-      A.AdjustLength,
-      A.SuitablePetCN,
-      A.SuitablePetEN,
-      A.ItemShortDescriptionCN,
-      A.ItemShortDescriptionEN,
-      A.ItemDescriptionCN,
-      A.ItemDescriptionEN,
-      A.ItemStatus,
-      (CASE A.ItemStatus WHEN 'P' THEN '待上架'
-       WHEN 'N' THEN '已上架'
-       WHEN 'E' THEN '已下架'
-       END) AS ItemStatusText,
-      A.ShowInListPage,
-      A.InUser,
-      DATE_FORMAT(A.InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
-      A.LastEditUser,
-      DATE_FORMAT(A.LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
-    FROM Item A
-      LEFT JOIN Brand B
-        ON A.BrandID = B.BrandID
-      LEFT JOIN Category C
-        ON A.CategoryID = C.CategoryID
-      LEFT JOIN SubCategory D
-        ON A.SubCategoryID = D.SubCategoryID
-      LEFT JOIN ItemSeries E
-        ON A.SeriesID = E.SeriesID
-      LEFT JOIN Color F
-        ON A.ColorID = F.ColorID
-      LEFT JOIN SizeMapping G
-        ON A.SizeID = G.SizeID
-      LEFT JOIN Country I
-        ON A.MadeInID = I.CountryID
-      LEFT JOIN ItemGroup J
-        ON A.ItemGroupID = J.ItemGroupID
-    ORDER BY InDate DESC
-    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
+      ItemID,
+      ItemName,
+      BankID,
+      BranchID,
+      ParentItemID,
+      ItemType,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `Item`
+    WHERE BankID = #{arg0,jdbcType=INTEGER}
+      AND BranchID = #{arg1,jdbcType=INTEGER}
+    ORDER BY ItemID;
   </select>
-  <select id="searchSalesCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  <select id="searchOfBranch" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT
-    COUNT(1) AS TotalCount
-    FROM Item A
-    LEFT JOIN Brand B
-    ON A.BrandID = B.BrandID
-    LEFT JOIN Category C
-    ON A.CategoryID = C.CategoryID
-    LEFT JOIN SubCategory D
-    ON A.SubCategoryID = D.SubCategoryID
-    LEFT JOIN ItemSeries E
-    ON A.SeriesID = E.SeriesID
-    LEFT JOIN Color F
-    ON A.ColorID = F.ColorID
-    LEFT JOIN SizeMapping G
-    ON A.SizeID = G.SizeID
-    LEFT JOIN Country I
-    ON A.MadeInID = I.CountryID
-    LEFT JOIN ItemGroup J
-    ON A.ItemGroupID = J.ItemGroupID
-    WHERE A.ItemStatus = 'N'
-      AND A.ShowInListPage = 1
-    <if test="arg0 != 0">
-      AND A.BrandID=#{arg0}
-    </if>
-    <if test="arg1 != 0">
-      AND A.CategoryID=#{arg1}
-    </if>
-    <if test="arg2 != 0">
-      AND A.SubCategoryID=#{arg2}
-    </if>
+      ItemID,
+      ItemName,
+      BankID,
+      BranchID,
+      ParentItemID,
+      ItemType,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `Item`
+    WHERE BankID = #{arg0,jdbcType=INTEGER}
+      AND BranchID = #{arg1,jdbcType=INTEGER}
+      AND ItemID = #{arg2,jdbcType=INTEGER}
+    ORDER BY ItemID;
   </select>
 
-  <select id="searchSalesList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    SELECT
-    A.ItemID,
-    A.BrandID,
-    B.BrandCN,
-    B.BrandEN,
-    A.CategoryID,
-    C.CategoryCN,
-    C.CategoryEN,
-    A.SubCategoryID,
-    D.SubCategoryCN,
-    D.SubCategoryEN,
-    A.ItemGroupID,
-    J.ItemGroupCN,
-    J.ItemGroupEN,
-    A.SeriesID,
-    A.ItemCode,
-    E.ItemSeriesCN,
-    E.ItemSeriesEN,
-    A.UnitPrice4RMB,
-    A.PromotionPrice4RMB,
-    A.UnitPrice4USD,
-    A.PromotionPrice4USD,
-    A.Rate,
-    A.ColorID,
-    F.ColorCN,
-    F.ColorEN,
-    A.SizeID,
-    G.SizeCN,
-    G.SizeEN,
-    A.ItemMaterial,
-    A.MadeInID,
-    I.CountryNameCN,
-    I.CountryNameEN,
-    A.ItemLength,
-    A.AdjustLength,
-    A.SuitablePetCN,
-    A.SuitablePetEN,
-    A.ItemShortDescriptionCN,
-    A.ItemShortDescriptionEN,
-    A.ItemDescriptionCN,
-    A.ItemDescriptionEN,
-    A.ItemStatus,
-    (CASE A.ItemStatus WHEN 'P' THEN '待上架'
-    WHEN 'N' THEN '已上架'
-    WHEN 'E' THEN '已下架'
-    END) AS ItemStatusText,
-    A.ShowInListPage,
-    A.InUser,
-    DATE_FORMAT(A.InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
-    A.LastEditUser,
-    DATE_FORMAT(A.LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
-    FROM Item A
-    LEFT JOIN Brand B
-    ON A.BrandID = B.BrandID
-    LEFT JOIN Category C
-    ON A.CategoryID = C.CategoryID
-    LEFT JOIN SubCategory D
-    ON A.SubCategoryID = D.SubCategoryID
-    LEFT JOIN ItemSeries E
-    ON A.SeriesID = E.SeriesID
-    LEFT JOIN Color F
-    ON A.ColorID = F.ColorID
-    LEFT JOIN SizeMapping G
-    ON A.SizeID = G.SizeID
-    LEFT JOIN Country I
-    ON A.MadeInID = I.CountryID
-    LEFT JOIN ItemGroup J
-    ON A.ItemGroupID = J.ItemGroupID
-    WHERE A.ItemStatus = 'N'
-      AND A.ShowInListPage = 1
-    <if test="arg2 != 0">
-      AND A.BrandID=#{arg2}
-    </if>
-    <if test="arg3 != 0">
-      AND A.CategoryID=#{arg3}
-    </if>
-    <if test="arg4 != 0">
-      AND A.SubCategoryID=#{arg4}
-    </if>
-    ORDER BY InDate DESC
-    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
-  </select>
-
-
-  <select id="searchListByItemName" resultMap="BaseResultMap">
-        SELECT
-        A.ItemID,
-        A.BrandID,
-        B.BrandCN,
-        B.BrandEN,
-        A.CategoryID,
-        C.CategoryCN,
-        C.CategoryEN,
-        A.SubCategoryID,
-        D.SubCategoryCN,
-        D.SubCategoryEN,
-        A.ItemGroupID,
-        J.ItemGroupCN,
-        J.ItemGroupEN,
-        A.SeriesID,
-        A.ItemCode,
-        E.ItemSeriesCN,
-        E.ItemSeriesEN,
-        A.UnitPrice4RMB,
-        A.PromotionPrice4RMB,
-        A.UnitPrice4USD,
-        A.PromotionPrice4USD,
-        A.Rate,
-        A.ColorID,
-        F.ColorCN,
-        F.ColorEN,
-        A.SizeID,
-        G.SizeCN,
-        G.SizeEN,
-        A.ItemMaterial,
-        A.MadeInID,
-        I.CountryNameCN,
-        I.CountryNameEN,
-        A.ItemLength,
-        A.AdjustLength,
-        A.SuitablePetCN,
-        A.SuitablePetEN,
-        A.ItemShortDescriptionCN,
-        A.ItemShortDescriptionEN,
-        A.ItemDescriptionCN,
-        A.ItemDescriptionEN,
-        A.ItemStatus,
-        (CASE A.ItemStatus WHEN 'P' THEN '待上架'
-        WHEN 'N' THEN '已上架'
-        WHEN 'E' THEN '已下架'
-        END) AS ItemStatusText,
-        A.ShowInListPage,
-        A.InUser,
-        DATE_FORMAT(A.InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
-        A.LastEditUser,
-        DATE_FORMAT(A.LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
-        FROM Item A
-        LEFT JOIN Brand B
-        ON A.BrandID = B.BrandID
-        LEFT JOIN Category C
-        ON A.CategoryID = C.CategoryID
-        LEFT JOIN SubCategory D
-        ON A.SubCategoryID = D.SubCategoryID
-        LEFT JOIN ItemSeries E
-        ON A.SeriesID = E.SeriesID
-        LEFT JOIN Color F
-        ON A.ColorID = F.ColorID
-        LEFT JOIN SizeMapping G
-        ON A.SizeID = G.SizeID
-        LEFT JOIN Country I
-        ON A.MadeInID = I.CountryID
-        LEFT JOIN ItemGroup J
-        ON A.ItemGroupID = J.ItemGroupID
-        WHERE A.ItemStatus = 'N'
-        AND (A.ItemShortDescriptionCN LIKE #{arg2}
-              OR A.ItemShortDescriptionEN LIKE #{arg2})
-        ORDER BY A.InDate DESC
-        LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};;
-    </select>
-
-  <select id="search" resultMap="BaseResultMap">
-    SELECT
-      A.ItemID,
-      A.BrandID,
-      B.BrandCN,
-      B.BrandEN,
-      A.CategoryID,
-      C.CategoryCN,
-      C.CategoryEN,
-      A.SubCategoryID,
-      D.SubCategoryCN,
-      D.SubCategoryEN,
-      A.ItemGroupID,
-      J.ItemGroupCN,
-      J.ItemGroupEN,
-      A.SeriesID,
-      A.ItemCode,
-      E.ItemSeriesCN,
-      E.ItemSeriesEN,
-      A.UnitPrice4RMB,
-      A.PromotionPrice4RMB,
-      A.UnitPrice4USD,
-      A.PromotionPrice4USD,
-      A.Rate,
-      A.ColorID,
-      F.ColorCN,
-      F.ColorEN,
-      A.SizeID,
-      G.SizeCN,
-      G.SizeEN,
-      A.ItemMaterial,
-      A.MadeInID,
-      I.CountryNameCN,
-      I.CountryNameEN,
-      A.ItemLength,
-      A.AdjustLength,
-      A.SuitablePetCN,
-      A.SuitablePetEN,
-      A.ItemShortDescriptionCN,
-      A.ItemShortDescriptionEN,
-      A.ItemDescriptionCN,
-      A.ItemDescriptionEN,
-      A.ItemStatus,
-      (CASE A.ItemStatus WHEN 'P' THEN '待上架'
-       WHEN 'N' THEN '已上架'
-       WHEN 'E' THEN '已下架'
-       END) AS ItemStatusText,
-      A.InUser,
-      DATE_FORMAT(A.InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
-      A.LastEditUser,
-      DATE_FORMAT(A.LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
-    FROM Item A
-      LEFT JOIN Brand B
-        ON A.BrandID = B.BrandID
-      LEFT JOIN Category C
-        ON A.CategoryID = C.CategoryID
-      LEFT JOIN SubCategory D
-        ON A.SubCategoryID = D.SubCategoryID
-      LEFT JOIN ItemSeries E
-        ON A.SeriesID = E.SeriesID
-      LEFT JOIN Color F
-        ON A.ColorID = F.ColorID
-      LEFT JOIN SizeMapping G
-        ON A.SizeID = G.SizeID
-      LEFT JOIN Country I
-        ON A.MadeInID = I.CountryID
-      LEFT JOIN ItemGroup J
-        ON A.ItemGroupID = J.ItemGroupID
-    WHERE ItemID = #{itemID,jdbcType=INTEGER}
-    ORDER BY InDate DESC
-  </select>
-  <select id="searchByParameters" resultMap="BaseResultMap">
-    SELECT
-    A.ItemID,
-    A.BrandID,
-    B.BrandCN,
-    B.BrandEN,
-    A.CategoryID,
-    C.CategoryCN,
-    C.CategoryEN,
-    A.SubCategoryID,
-    D.SubCategoryCN,
-    D.SubCategoryEN,
-    A.ItemGroupID,
-    J.ItemGroupCN,
-    J.ItemGroupEN,
-    A.SeriesID,
-    A.ItemCode,
-    E.ItemSeriesCN,
-    E.ItemSeriesEN,
-    A.UnitPrice4RMB,
-    A.PromotionPrice4RMB,
-    A.UnitPrice4USD,
-    A.PromotionPrice4USD,
-    A.Rate,
-    A.ColorID,
-    F.ColorCN,
-    F.ColorEN,
-    A.SizeID,
-    G.SizeCN,
-    G.SizeEN,
-    A.ItemMaterial,
-    A.MadeInID,
-    I.CountryNameCN,
-    I.CountryNameEN,
-    A.ItemLength,
-    A.AdjustLength,
-    A.SuitablePetCN,
-    A.SuitablePetEN,
-    A.ItemShortDescriptionCN,
-    A.ItemShortDescriptionEN,
-    A.ItemDescriptionCN,
-    A.ItemDescriptionEN,
-    A.ItemStatus,
-    (CASE A.ItemStatus WHEN 'P' THEN '待上架'
-    WHEN 'N' THEN '已上架'
-    WHEN 'E' THEN '已下架'
-    END) AS ItemStatusText,
-    A.InUser,
-    DATE_FORMAT(A.InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
-    A.LastEditUser,
-    DATE_FORMAT(A.LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
-    FROM Item A
-    LEFT JOIN Brand B
-    ON A.BrandID = B.BrandID
-    LEFT JOIN Category C
-    ON A.CategoryID = C.CategoryID
-    LEFT JOIN SubCategory D
-    ON A.SubCategoryID = D.SubCategoryID
-    LEFT JOIN ItemSeries E
-    ON A.SeriesID = E.SeriesID
-    LEFT JOIN Color F
-    ON A.ColorID = F.ColorID
-    LEFT JOIN SizeMapping G
-    ON A.SizeID = G.SizeID
-    LEFT JOIN Country I
-    ON A.MadeInID = I.CountryID
-    LEFT JOIN ItemGroup J
-    ON A.ItemGroupID = J.ItemGroupID
-    WHERE A.BrandID = #{arg0,jdbcType=INTEGER}
-        AND A.CategoryID = #{arg1,jdbcType=INTEGER}
-        AND A.SubCategoryID = #{arg2,jdbcType=INTEGER}
-        AND A.ItemGroupID = #{arg3,jdbcType=INTEGER}
-        AND A.SeriesID = #{arg4,jdbcType=INTEGER}
-        AND A.ColorID = #{arg5,jdbcType=INTEGER}
-        AND A.SizeID = #{arg6,jdbcType=INTEGER};
-  </select>
-  <select id="searchByItemCode" resultMap="BaseResultMap">
-    SELECT
-      A.ItemID,
-      A.BrandID,
-      B.BrandCN,
-      B.BrandEN,
-      A.CategoryID,
-      C.CategoryCN,
-      C.CategoryEN,
-      A.SubCategoryID,
-      D.SubCategoryCN,
-      D.SubCategoryEN,
-      A.ItemGroupID,
-      J.ItemGroupCN,
-      J.ItemGroupEN,
-      A.SeriesID,
-      A.ItemCode,
-      E.ItemSeriesCN,
-      E.ItemSeriesEN,
-      A.UnitPrice4RMB,
-      A.PromotionPrice4RMB,
-      A.UnitPrice4USD,
-      A.PromotionPrice4USD,
-      A.Rate,
-      A.ColorID,
-      F.ColorCN,
-      F.ColorEN,
-      A.SizeID,
-      G.SizeCN,
-      G.SizeEN,
-      A.ItemMaterial,
-      A.MadeInID,
-      I.CountryNameCN,
-      I.CountryNameEN,
-      A.ItemLength,
-      A.AdjustLength,
-      A.SuitablePetCN,
-      A.SuitablePetEN,
-      A.ItemShortDescriptionCN,
-      A.ItemShortDescriptionEN,
-      A.ItemDescriptionCN,
-      A.ItemDescriptionEN,
-      A.ItemStatus,
-      (CASE A.ItemStatus WHEN 'P' THEN '待上架'
-       WHEN 'N' THEN '已上架'
-       WHEN 'E' THEN '已下架'
-       END) AS ItemStatusText,
-      A.InUser,
-      DATE_FORMAT(A.InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
-      A.LastEditUser,
-      DATE_FORMAT(A.LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
-    FROM Item A
-      LEFT JOIN Brand B
-        ON A.BrandID = B.BrandID
-      LEFT JOIN Category C
-        ON A.CategoryID = C.CategoryID
-      LEFT JOIN SubCategory D
-        ON A.SubCategoryID = D.SubCategoryID
-      LEFT JOIN ItemSeries E
-        ON A.SeriesID = E.SeriesID
-      LEFT JOIN Color F
-        ON A.ColorID = F.ColorID
-      LEFT JOIN SizeMapping G
-        ON A.SizeID = G.SizeID
-      LEFT JOIN Country I
-        ON A.MadeInID = I.CountryID
-      LEFT JOIN ItemGroup J
-        ON A.ItemGroupID = J.ItemGroupID
-    WHERE A.ItemCode = #{itemCode,jdbcType=NVARCHAR}
-  </select>
-  <select id="searchByItemName" resultMap="BaseResultMap">
-    SELECT
-      A.ItemID,
-      A.BrandID,
-      B.BrandCN,
-      B.BrandEN,
-      A.CategoryID,
-      C.CategoryCN,
-      C.CategoryEN,
-      A.SubCategoryID,
-      D.SubCategoryCN,
-      D.SubCategoryEN,
-      A.ItemGroupID,
-      J.ItemGroupCN,
-      J.ItemGroupEN,
-      A.SeriesID,
-      A.ItemCode,
-      E.ItemSeriesCN,
-      E.ItemSeriesEN,
-      A.UnitPrice4RMB,
-      A.PromotionPrice4RMB,
-      A.UnitPrice4USD,
-      A.PromotionPrice4USD,
-      A.Rate,
-      A.ColorID,
-      F.ColorCN,
-      F.ColorEN,
-      A.SizeID,
-      G.SizeCN,
-      G.SizeEN,
-      A.ItemMaterial,
-      A.MadeInID,
-      I.CountryNameCN,
-      I.CountryNameEN,
-      A.ItemLength,
-      A.AdjustLength,
-      A.SuitablePetCN,
-      A.SuitablePetEN,
-      A.ItemShortDescriptionCN,
-      A.ItemShortDescriptionEN,
-      A.ItemDescriptionCN,
-      A.ItemDescriptionEN,
-      A.ItemStatus,
-      (CASE A.ItemStatus WHEN 'P' THEN '待上架'
-       WHEN 'N' THEN '已上架'
-       WHEN 'E' THEN '已下架'
-       END) AS ItemStatusText,
-      A.InUser,
-      DATE_FORMAT(A.InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
-      A.LastEditUser,
-      DATE_FORMAT(A.LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
-    FROM Item A
-      LEFT JOIN Brand B
-        ON A.BrandID = B.BrandID
-      LEFT JOIN Category C
-        ON A.CategoryID = C.CategoryID
-      LEFT JOIN SubCategory D
-        ON A.SubCategoryID = D.SubCategoryID
-      LEFT JOIN ItemSeries E
-        ON A.SeriesID = E.SeriesID
-      LEFT JOIN Color F
-        ON A.ColorID = F.ColorID
-      LEFT JOIN SizeMapping G
-        ON A.SizeID = G.SizeID
-      LEFT JOIN Country I
-        ON A.MadeInID = I.CountryID
-      LEFT JOIN ItemGroup J
-        ON A.ItemGroupID = J.ItemGroupID
-    WHERE A.BrandID = #{arg0,jdbcType=INTEGER}
-        AND A.CategoryID = #{arg1,jdbcType=INTEGER}
-        AND A.SubCategoryID = #{arg2,jdbcType=INTEGER}
-        AND A.SeriesID = #{arg3,jdbcType=INTEGER}
-        AND (A.ItemNameCN = #{arg4,jdbcType=NVARCHAR} OR BINARY A.ItemNameEN = #{arg4,jdbcType=VARCHAR})
-  </select>
-  <insert id="insert" useGeneratedKeys="true" keyProperty="itemID" parameterType="com.johnny.store.entity.ItemEntity" >
-    INSERT INTO Item (
-      BrandID,
-      CategoryID,
-      SubCategoryID,
-      ItemGroupID,
-      SeriesID,
-      ItemCode,
-      UnitPrice4RMB,
-      PromotionPrice4RMB,
-      UnitPrice4USD,
-      PromotionPrice4USD,
-      Rate,
-      ColorID,
-      SizeID,
-      ItemMaterial,
-      MadeInID,
-      ItemLength,
-      AdjustLength,
-      SuitablePetCN,
-      SuitablePetEN,
-      ItemShortDescriptionCN,
-      ItemShortDescriptionEN,
-      ItemDescriptionCN,
-      ItemDescriptionEN,
-      ItemStatus,
+  <insert id="insert" parameterType="com.johnny.store.entity.ItemEntity" >
+    INSERT INTO `Item` (
+      ItemName,
+      BankID,
+      BranchID,
+      ParentItemID,
+      ItemType,
       InUser,
       LastEditUser
     )
     VALUES (
-    #{brandID, jdbcType=INTEGER},
-    #{categoryID, jdbcType=INTEGER},
-    #{subCategoryID, jdbcType=INTEGER},
-    #{itemGroupID, jdbcType=INTEGER},
-    #{seriesID, jdbcType=INTEGER},
-    #{itemCode, jdbcType=VARCHAR},
-    #{unitPrice4RMB, jdbcType=DECIMAL},
-    #{promotionPrice4RMB, jdbcType=DECIMAL},
-    #{unitPrice4USD, jdbcType=DECIMAL},
-    #{promotionPrice4USD, jdbcType=DECIMAL},
-    #{rate, jdbcType=FLOAT},
-    #{colorID, jdbcType=INTEGER},
-    #{sizeID, jdbcType=INTEGER},
-    #{itemMaterial, jdbcType=VARCHAR},
-    #{madeInID, jdbcType=INTEGER},
-    #{itemLength, jdbcType=VARCHAR},
-    #{adjustLength, jdbcType=VARCHAR},
-    #{suitablePetCN, jdbcType=VARCHAR},
-    #{suitablePetEN, jdbcType=VARCHAR},
-    #{itemShortDescriptionCN, jdbcType=VARCHAR},
-    #{itemShortDescriptionEN, jdbcType=VARCHAR},
-    #{itemDescriptionCN, jdbcType=VARCHAR},
-    #{itemDescriptionEN, jdbcType=VARCHAR},
-    #{itemStatus, jdbcType=VARCHAR},
-    #{inUser, jdbcType=VARCHAR},
-    #{lastEditUser, jdbcType=VARCHAR}
+      #{itemName, jdbcType=VARCHAR},
+      #{bankID, jdbcType=INTEGER},
+      #{branchID, jdbcType=INTEGER},
+      #{parentItemID, jdbcType=INTEGER},
+      #{itemType, jdbcType=VARCHAR},
+      #{inUser, jdbcType=VARCHAR},
+      #{lastEditUser, jdbcType=VARCHAR}
     )
   </insert>
   <update id="update" parameterType="com.johnny.store.entity.ItemEntity" >
-    UPDATE Item SET
-      BrandID = #{brandID, jdbcType=INTEGER},
-      CategoryID = #{categoryID, jdbcType=INTEGER},
-      SubCategoryID = #{subCategoryID, jdbcType=INTEGER},
-      ItemGroupID = #{itemGroupID, jdbcType=INTEGER},
-      SeriesID = #{seriesID, jdbcType=INTEGER},
-      ItemCode = #{itemCode, jdbcType=VARCHAR},
-      UnitPrice4RMB = #{unitPrice4RMB, jdbcType=DECIMAL},
-      PromotionPrice4RMB = #{promotionPrice4RMB, jdbcType=DECIMAL},
-      UnitPrice4USD = #{unitPrice4USD, jdbcType=DECIMAL},
-      PromotionPrice4USD = #{promotionPrice4USD, jdbcType=DECIMAL},
-      Rate = #{rate, jdbcType=FLOAT},
-      ColorID = #{colorID, jdbcType=INTEGER},
-      SizeID = #{sizeID, jdbcType=INTEGER},
-      ItemMaterial = #{itemMaterial, jdbcType=VARCHAR},
-      MadeInID = #{madeInID, jdbcType=INTEGER},
-      ItemLength = #{itemLength, jdbcType=VARCHAR},
-      AdjustLength = #{adjustLength, jdbcType=VARCHAR},
-      SuitablePetCN = #{suitablePetCN, jdbcType=VARCHAR},
-      SuitablePetEN = #{suitablePetEN, jdbcType=VARCHAR},
-      ItemShortDescriptionCN = #{itemShortDescriptionCN, jdbcType=VARCHAR},
-      ItemShortDescriptionEN = #{itemShortDescriptionEN, jdbcType=VARCHAR},
-      ItemDescriptionCN = #{itemDescriptionCN, jdbcType=VARCHAR},
-      ItemDescriptionEN = #{itemDescriptionEN, jdbcType=VARCHAR},
-      ItemStatus = #{itemStatus, jdbcType=VARCHAR},
+    UPDATE `Item` SET
+      ItemName = #{itemName,jdbcType=NVARCHAR},
       LastEditUser = #{lastEditUser,jdbcType=VARCHAR}
     WHERE ItemID = #{itemID,jdbcType=INTEGER}
   </update>
-  <update id="updateItemToShowInList" parameterType="com.johnny.store.entity.ItemEntity" >
-    UPDATE Item SET
-    ShowInListPage = #{showInListPage, jdbcType=BOOLEAN},
-    LastEditUser = #{lastEditUser,jdbcType=VARCHAR}
-    WHERE ItemID = #{itemID,jdbcType=INTEGER}
-  </update>
   <delete id="delete" parameterType="java.lang.Integer" >
-    DELETE FROM Item
-    WHERE ItemID = #{itemID,jdbcType=INTEGER}
+    DELETE FROM `Item`
+    WHERE ItemID = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteDetailOfItem" >
+    DELETE FROM `Item`
+    WHERE BankID = #{arg0,jdbcType=INTEGER}
+      AND BranchID = #{arg1,jdbcType=INTEGER}
+      AND ParentItemID = #{arg2,jdbcType=INTEGER}
+      AND ItemName = #{arg3,jdbcType=NVARCHAR}
+      AND ItemType = 'D'
+  </delete>
+
 </mapper>

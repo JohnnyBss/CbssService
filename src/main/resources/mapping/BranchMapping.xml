@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johnny.store.mapper.BranchMapper" >
+  <resultMap id="BaseResultMap" type="com.johnny.store.entity.BranchEntity" >
+    <id column="BranchID" property="branchID" jdbcType="INTEGER" />
+    <result column="BranchName" property="branchName" jdbcType="NVARCHAR" />
+    <result column="BankID" property="bankID" jdbcType="INTEGER" />
+    <result column="InUser" property="inUser" jdbcType="VARCHAR" />
+    <result column="InDate" property="inDate" jdbcType="TIMESTAMP" />
+    <result column="LastEditUser" property="lastEditUser" jdbcType="VARCHAR" />
+    <result column="LastEditDate" property="lastEditDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="searchTotalCount" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1) AS TotalCount
+    FROM Branch;
+  </select>
+  <select id="searchList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+      BranchID,
+      BranchName,
+      BankID,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM Branch
+    ORDER BY InDate DESC
+    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
+  </select>
+  <select id="search" resultMap="BaseResultMap">
+    SELECT
+      BranchID,
+      BranchName,
+      BankID,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM Branch
+    WHERE BranchID = #{branchID,jdbcType=INTEGER}
+    </select>
+  <select id="searchByName" resultMap="BaseResultMap">
+    SELECT
+      BranchID,
+      BranchName,
+      BankID,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM Branch
+    WHERE BranchName = #{branchName,jdbcType=NVARCHAR}
+  </select>
+  <select id="searchList4Bank" resultMap="BaseResultMap">
+    SELECT
+      BranchID,
+      BranchName,
+      BankID,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM Branch
+    WHERE BankID = #{bankID,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" parameterType="com.johnny.store.entity.BranchEntity" >
+    INSERT INTO Branch (
+      BranchName,
+      BankID,
+      InUser,
+      LastEditUser
+    )
+    VALUES (
+      #{branchName, jdbcType=VARCHAR},
+      #{bankID, jdbcType=INTEGER},
+      #{inUser, jdbcType=VARCHAR},
+      #{lastEditUser, jdbcType=VARCHAR}
+    )
+  </insert>
+  <update id="update" parameterType="com.johnny.store.entity.BranchEntity" >
+    UPDATE Branch SET
+      BranchName = #{branchName,jdbcType=NVARCHAR},
+      LastEditUser = #{lastEditUser,jdbcType=VARCHAR}
+    WHERE BranchID = #{branchID,jdbcType=INTEGER}
+  </update>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    DELETE FROM Branch
+    WHERE BranchID = #{id,jdbcType=INTEGER}
+  </delete>
+</mapper>

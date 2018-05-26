@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.common.XmlSerializeUtils;
 import com.johnny.store.config.ResponseSetting;
 import com.johnny.store.constant.ConfigFileConsts;

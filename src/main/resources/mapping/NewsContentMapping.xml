@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johnny.store.mapper.NewsContentMapper" >
+  <resultMap id="BaseResultMap" type="com.johnny.store.entity.NewsContentEntity" >
+    <id column="NewsContentID" property="newsContentID" jdbcType="INTEGER" />
+    <result column="NewsID" property="newsID" jdbcType="INTEGER" />
+    <result column="NewsContentType" property="newsContentType" jdbcType="VARCHAR" />
+    <result column="NewsContent" property="newsContent" jdbcType="VARCHAR" />
+    <result column="InUser" property="inUser" jdbcType="VARCHAR" />
+    <result column="InDate" property="inDate" jdbcType="TIMESTAMP" />
+    <result column="LastEditUser" property="lastEditUser" jdbcType="VARCHAR" />
+    <result column="LastEditDate" property="lastEditDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="searchList4News" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+      NewsContentID,
+      NewsID,
+      NewsContentType,
+      NewsContent,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM NewsContent
+    WHERE NewsID = #{newsID,jdbcType=INTEGER}
+    ORDER BY NewsContentID ASC;
+  </select>
+  <insert id="insert" parameterType="com.johnny.store.entity.NewsContentEntity" >
+    INSERT INTO NewsContent (
+      NewsID,
+      NewsContentType,
+      NewsContent,
+      InUser,
+      LastEditUser
+    )
+    VALUES (
+      #{newsID, jdbcType=INTEGER},
+      #{newsContentType, jdbcType=INTEGER},
+      #{newsContent, jdbcType=VARCHAR},
+      #{inUser, jdbcType=VARCHAR},
+      #{lastEditUser, jdbcType=VARCHAR}
+    )
+  </insert>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    DELETE FROM NewsContent
+    WHERE NewsID = #{id,jdbcType=INTEGER}
+  </delete>
+</mapper>

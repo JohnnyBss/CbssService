@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johnny.store.mapper.SystemNameMapper" >
+  <resultMap id="BaseResultMap" type="com.johnny.store.entity.SystemNameEntity" >
+    <id column="SysNameID" property="sysNameID" jdbcType="INTEGER" />
+    <result column="BankID" property="bankID" jdbcType="INTEGER" />
+    <result column="BranchID" property="branchID" jdbcType="INTEGER" />
+    <result column="SysName" property="sysName" jdbcType="VARCHAR" />
+    <result column="InUser" property="inUser" jdbcType="VARCHAR" />
+    <result column="InDate" property="inDate" jdbcType="TIMESTAMP" />
+    <result column="LastEditUser" property="lastEditUser" jdbcType="VARCHAR" />
+    <result column="LastEditDate" property="lastEditDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <select id="search" resultMap="BaseResultMap">
+    SELECT
+      SysNameID,
+      BankID,
+      BranchID,
+      SysName,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `SystemName`
+    WHERE SysNameID = #{sysNameID,jdbcType=INTEGER}
+  </select>
+  <update id="update" parameterType="com.johnny.store.entity.SystemNameEntity" >
+    UPDATE `SystemName` SET
+      SysName = #{sysName,jdbcType=NVARCHAR},
+      LastEditUser = #{lastEditUser,jdbcType=VARCHAR}
+    WHERE SysNameID = #{sysNameID,jdbcType=INTEGER}
+  </update>
+</mapper>

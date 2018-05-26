@@ -193,6 +193,22 @@ public class ConvertManager {
         return userVO;
     }
 
+    public static SystemNameVO convertEntityToVO(SystemNameEntity entity){
+        if(entity == null){
+            return null;
+        }
+        SystemNameVO systemNameVO = new SystemNameVO();
+        systemNameVO.setBankID(entity.getBankID());
+        systemNameVO.setBranchID(entity.getBranchID());
+        systemNameVO.setSysNameID(entity.getSysNameID());
+        systemNameVO.setSysName(entity.getSysName());
+        systemNameVO.setInUser(entity.getInUser());
+        systemNameVO.setInDate(entity.getInDate());
+        systemNameVO.setLastEditUser(entity.getLastEditUser());
+        systemNameVO.setLastEditDate(entity.getLastEditDate());
+        return systemNameVO;
+    }
+
     private static List<NewsContentVO> convertEntityToVO(List<NewsContentEntity> entityList){
         if(entityList.isEmpty()){
             return null;
@@ -330,5 +346,16 @@ public class ConvertManager {
         userEntity.setInUser(dto.getLoginUser());
         userEntity.setLastEditUser(dto.getLoginUser());
         return userEntity;
+    }
+
+    public static SystemNameEntity convertDtoToEntity(SystemNameDTO dto){
+        SystemNameEntity systemNameEntity = new SystemNameEntity();
+        systemNameEntity.setBankID(dto.getBankID());
+        systemNameEntity.setBranchID(dto.getBranchID());
+        systemNameEntity.setSysNameID(dto.getSysNameID());
+        systemNameEntity.setSysName(dto.getSysName());
+        systemNameEntity.setInUser(dto.getLoginUser());
+        systemNameEntity.setLastEditUser(dto.getLoginUser());
+        return systemNameEntity;
     }
 }

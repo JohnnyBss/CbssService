@@ -86,7 +86,9 @@ public class LogoServiceImpl implements LogoService {
     public UnifiedResponse add(LogoDTO dto) {
         try {
             LogoEntity entity = convertDtoToEntity(dto);
-            int affectRow = logoMapper.insert(entity);
+            int affectDeleteRow = logoMapper.delete4Branch(entity.getBankID(), entity.getBranchID());
+            int affectAddRow = logoMapper.insert(entity);
+            int affectRow = affectDeleteRow +  affectAddRow;
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
             LogUtils.processExceptionLog(ex);

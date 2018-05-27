@@ -139,6 +139,7 @@ public class ConvertManager {
         logoVO.setBankVO(bankVO);
         logoVO.setBranchID(entity.getBranchID());
         logoVO.setBranchVO(branchVO);
+        logoVO.setLogoUrl(entity.getLogoUrl());
         logoVO.setStatus(entity.getStatus());
         logoVO.setInDate(entity.getInDate());
         logoVO.setInUser(entity.getInUser());
@@ -304,6 +305,7 @@ public class ConvertManager {
         entity.setLogoID(dto.getLogoID());
         entity.setBankID(dto.getBankID());
         entity.setBranchID(dto.getBranchID());
+        entity.setLogoUrl(dto.getLogoUrl());
         entity.setStatus(dto.getStatus());
         entity.setInUser(dto.getLoginUser());
         entity.setLastEditUser(dto.getLoginUser());

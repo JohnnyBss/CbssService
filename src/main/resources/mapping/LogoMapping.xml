@@ -93,4 +93,9 @@
     DELETE FROM `Logo`
     WHERE LogoID = #{id,jdbcType=INTEGER};
   </delete>
+  <delete id="delete4Branch" parameterType="java.lang.Integer" >
+    DELETE FROM `Logo`
+    WHERE BankID = #{arg0,jdbcType=INTEGER}
+    AND BranchID = #{arg1,jdbcType=INTEGER};
+  </delete>
 </mapper>

@@ -26,6 +26,13 @@ public class ItemController {
         return serviceImpl.findListItems(bankID, branchID);
     }
 
+    @RequestMapping(value = "/api/item/{bankID}/{branchID}/{parentItemID}", method = RequestMethod.GET)
+    public UnifiedResponse get(@PathVariable("bankID") int bankID,
+                               @PathVariable("branchID") int branchID,
+                               @PathVariable("parentItemID") int parentItemID){
+        return serviceImpl.findItemsOfParent(bankID, branchID, parentItemID);
+    }
+
     @RequestMapping(value = "/api/item/exist/{name}", method = RequestMethod.GET)
     public UnifiedResponse get(@PathVariable("name") String name){
         return serviceImpl.existCheck(name);

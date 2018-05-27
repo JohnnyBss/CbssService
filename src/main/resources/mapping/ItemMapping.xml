@@ -64,6 +64,24 @@
       AND ItemID = #{arg2,jdbcType=INTEGER}
     ORDER BY ItemID;
   </select>
+  <select id="searchItemOfParent" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+      ItemID,
+      ItemName,
+      BankID,
+      BranchID,
+      ParentItemID,
+      ItemType,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `Item`
+    WHERE BankID = #{arg0,jdbcType=INTEGER}
+      AND BranchID = #{arg1,jdbcType=INTEGER}
+      AND ParentItemID = #{arg2,jdbcType=INTEGER}
+    ORDER BY ItemID;
+  </select>
 
   <insert id="insert" parameterType="com.johnny.store.entity.ItemEntity" >
     INSERT INTO `Item` (

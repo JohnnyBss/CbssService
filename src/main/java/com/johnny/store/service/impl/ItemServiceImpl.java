@@ -42,6 +42,21 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public UnifiedResponse findItemsOfParent(int bankID, int branchID, int parentItemID) {
+        try {
+            List<ItemVO> modelList = new ArrayList<>();
+            List<ItemEntity> entityList =  itemMapper.searchItemOfParent(bankID, branchID, parentItemID);
+            for (ItemEntity entity : entityList) {
+                modelList.add(convertEntityToVo(entity));
+            }
+            return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
+        } catch (Exception ex) {
+            LogUtils.processExceptionLog(ex);
+            return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
+        }
+    }
+
+    @Override
     public UnifiedResponse findList(int pageNumber, int pageSize) {
         return null;
     }

@@ -8,6 +8,8 @@ import com.johnny.store.vo.UnifiedResponse;
 public interface DetailService extends BaseService<DetailDTO, DetailVO, DetailEntity> {
     UnifiedResponse findList4Item(int bankID, int branchID, int itemID, int year, int quarter);
 
+    UnifiedResponse findFileList(int bankID, int branchID, String fileName);
+
     UnifiedResponse deleteAll(int bankID, int branchID, int itemID, int year, int quarter);
 
     UnifiedResponse deleteImage(int bankID, int branchID, int itemID, int detailID);

@@ -9,6 +9,8 @@ import java.util.List;
 public interface DetailMapper extends BaseMapper<DetailEntity>{
     List<DetailEntity> searchList4Item(int bankID, int branchID, int itemID, int year, int quarter);
 
+    List<DetailEntity> searchFileList(int bankID, int branchID, String fileName);
+
     int deleteAll(int bankID, int branchID, int itemID, int year, int quarter);
 
     int deleteImageMemo(int bankID, int branchID, int itemID, int textMapDetail);

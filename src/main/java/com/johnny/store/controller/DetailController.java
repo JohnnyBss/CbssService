@@ -44,6 +44,13 @@ public class DetailController {
         return serviceImpl.findList4Item(bankID, branchID, itemID, year, quarter);
     }
 
+    @RequestMapping(value = "/api/detail/file/{bankID}/{branchID}/{fileName}", method = RequestMethod.GET)
+    public UnifiedResponse get4Item(@PathVariable("bankID") int bankID,
+                                    @PathVariable("branchID") int branchID,
+                                    @PathVariable("fileName") String fileName){
+        return serviceImpl.findFileList(bankID, branchID, fileName);
+    }
+
     @RequestMapping(value="/api/detail", method = RequestMethod.POST)
     public UnifiedResponse post(@RequestBody DetailDTO dto){
         return serviceImpl.add(dto);

@@ -42,6 +42,21 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public UnifiedResponse findItem(int bankID, int branchID, int itemID) {
+        try {
+            ItemEntity entity =  itemMapper.searchOfBranch(bankID, branchID, itemID);
+            if(entity == null){
+                return UnifiedResponseManager.buildSuccessResponse(0, null);
+            }
+            ItemVO model = convertEntityToVo(entity);
+            return UnifiedResponseManager.buildSuccessResponse(1, model);
+        } catch (Exception ex) {
+            LogUtils.processExceptionLog(ex);
+            return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
+        }
+    }
+
+    @Override
     public UnifiedResponse findItemsOfParent(int bankID, int branchID, int parentItemID) {
         try {
             List<ItemVO> modelList = new ArrayList<>();
@@ -80,8 +95,17 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public UnifiedResponse add(ItemDTO dto) {
         try {
+            int affectRow = 0;
             ItemEntity entity = convertDtoToEntity(dto);
-            int affectRow = itemMapper.insert(entity);
+            if(dto.getItemType().equals("D")){
+                ItemEntity detailItem =  itemMapper.searchByName(dto.getItemName());
+                if(detailItem == null){
+                    affectRow = itemMapper.insert(entity);
+                }
+            }else{
+                affectRow = itemMapper.insert(entity);
+            }
+
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
             LogUtils.processExceptionLog(ex);

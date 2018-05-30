@@ -44,6 +44,32 @@
     ORDER BY InDate DESC
     LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
   </select>
+
+  <select id="searchFileList" resultMap="BaseResultMap">
+    SELECT
+      DetailID,
+      BankID,
+      BranchID,
+      ItemID,
+      Sequence,
+      Animation,
+      ContentType,
+      Content,
+      TextMapDetail,
+      Year,
+      Quarter,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `Detail`
+    WHERE BankID = #{arg0,jdbcType=INTEGER}
+      AND BranchID = #{arg1,jdbcType=INTEGER}
+      AND Content LIKE #{arg2}
+      AND ContentType = 'F'
+    ORDER BY InDate DESC;
+  </select>
+
   <select id="search" resultMap="BaseResultMap">
     SELECT
       DetailID,

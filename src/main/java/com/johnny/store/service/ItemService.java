@@ -8,7 +8,9 @@ import com.johnny.store.vo.UnifiedResponse;
 public interface ItemService extends BaseService<ItemDTO, ItemVO, ItemEntity> {
     UnifiedResponse findListItems(int bankID, int branchID);
 
-    UnifiedResponse findItemsOfParent(int bankID, int branchID,  int parentItemID);
+    UnifiedResponse findItem(int bankID, int branchID, int itemID);
+
+    UnifiedResponse findItemsOfParent(int bankID, int branchID, int parentItemID);
 
     UnifiedResponse saveDetailItem(ItemDTO dto);
 

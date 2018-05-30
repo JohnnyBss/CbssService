@@ -49,6 +49,24 @@ public class DetailServiceImpl implements DetailService {
     }
 
     @Override
+    public UnifiedResponse findFileList(int bankID, int branchID, String fileName) {
+        try {
+            List<DetailVO> modelList = new ArrayList<>();
+            List<DetailEntity> entityList =  detailMapper.searchFileList(bankID, branchID, "%" + fileName + "%");
+            if(entityList == null){
+                return UnifiedResponseManager.buildSuccessResponse(0, null);
+            }
+            for (DetailEntity entity : entityList) {
+                modelList.add(convertEntityToVo(entity));
+            }
+            return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
+        } catch (Exception ex) {
+            LogUtils.processExceptionLog(ex);
+            return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
+        }
+    }
+
+    @Override
     public UnifiedResponse deleteAll(int bankID, int branchID, int itemID, int year, int quarter) {
         try {
             String itemName = year + "年第" + quarter + "季度";

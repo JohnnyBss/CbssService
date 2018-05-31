@@ -98,7 +98,7 @@ public class ItemServiceImpl implements ItemService {
             int affectRow = 0;
             ItemEntity entity = convertDtoToEntity(dto);
             if(dto.getItemType().equals("D")){
-                ItemEntity detailItem =  itemMapper.searchByName(dto.getItemName());
+                ItemEntity detailItem =  itemMapper.searchDetail4Branch(dto.getBankID(), dto.getBranchID(), dto.getParentItemID(), dto.getItemName());
                 if(detailItem == null){
                     affectRow = itemMapper.insert(entity);
                 }

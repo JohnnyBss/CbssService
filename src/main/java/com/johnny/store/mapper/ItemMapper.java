@@ -12,6 +12,8 @@ public interface ItemMapper extends BaseMapper<ItemEntity> {
 
     ItemEntity searchOfBranch(int bankID, int branchID, int itemID);
 
+    ItemEntity searchDetail4Branch(int bankID, int branchID, int parentItemID, String itemName);
+
     List<ItemEntity> searchItemOfParent(int bankID, int branchID, int parentItemID);
 
     int deleteDetailOfItem(int bankID, int branchID, int parentItemID, String itemName);

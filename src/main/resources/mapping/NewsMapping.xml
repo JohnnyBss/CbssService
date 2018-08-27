@@ -79,7 +79,7 @@
     <if test="arg3 != 0">
       AND BranchID=#{arg3,jdbcType=INTEGER}
     </if>
-    ORDER BY InDate DESC
+    ORDER BY NewsDate DESC
     LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
     </select>
   <insert id="insert" useGeneratedKeys="true" keyProperty="newsID" parameterType="com.johnny.store.entity.NewsEntity" >

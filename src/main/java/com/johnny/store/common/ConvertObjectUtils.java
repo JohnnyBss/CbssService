@@ -45,12 +45,16 @@ public class ConvertObjectUtils {
                     }
                 }
                 for (Method aGet : get) {
-                    if (aGet == null)// 数组初始化的长度多于get方法，所以数组后面的部分是null
+                    // 数组初始化的长度多于get方法，所以数组后面的部分是null
+                    if (aGet == null){
                         continue;
+                    }
+
                     // 得到get方法的值，判断时候为null，如果为null则进行下一个循环
                     Object value = aGet.invoke(class2, new Object[]{});
-                    if (null == value)
+                    if (null == value){
                         continue;
+                    }
                     // 得到get方法的名称 例如：getXxxx
                     String getName = aGet.getName();
                     // 得到set方法的时候传入的参数类型，就是get方法的返回类型
@@ -63,8 +67,9 @@ public class ConvertObjectUtils {
                         continue;
                     }
                     // class1的get方法不为空并且class1中get方法得到的值为空，进行赋值，如果class1属性原来有值，则跳过
-                    if (null == getMethod || null != getMethod.invoke(class1, new Object[]{}))
+                    if (null == getMethod || null != getMethod.invoke(class1, new Object[]{})){
                         continue;
+                    }
                     // 通过getName 例如getXxxx 截取后得到Xxxx，然后在前面加上set，就组装成set的方法名
                     String setName = "set" + getName.substring(3);
                     // 得到class1的set方法，并调用

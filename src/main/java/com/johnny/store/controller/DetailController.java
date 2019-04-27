@@ -35,13 +35,11 @@ public class DetailController {
         return serviceImpl.findImageMemo(bankID, branchID, itemID, textMapDetail);
     }
 
-    @RequestMapping(value = "/api/detail/item/{bankID}/{branchID}/{itemID}/{year}/{quarter}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/detail/item/{bankID}/{branchID}/{itemID}", method = RequestMethod.GET)
     public UnifiedResponse get4Item(@PathVariable("bankID") int bankID,
                                      @PathVariable("branchID") int branchID,
-                                     @PathVariable("itemID") int itemID,
-                                     @PathVariable("year") int year,
-                                     @PathVariable("quarter") int quarter){
-        return serviceImpl.findList4Item(bankID, branchID, itemID, year, quarter);
+                                     @PathVariable("itemID") int itemID){
+        return serviceImpl.findList4Item(bankID, branchID, itemID);
     }
 
     @RequestMapping(value = "/api/detail/file/{bankID}/{branchID}/{fileName}", method = RequestMethod.GET)
@@ -56,13 +54,11 @@ public class DetailController {
         return serviceImpl.add(dto);
     }
 
-    @RequestMapping(value="/api/detail/deleteOfItem/{bankID}/{branchID}/{itemID}/{year}/{quarter}", method = RequestMethod.DELETE)
+    @RequestMapping(value="/api/detail/deleteOfItem/{bankID}/{branchID}/{itemID}", method = RequestMethod.DELETE)
     public UnifiedResponse delete(@PathVariable("bankID") int bankID,
                                   @PathVariable("branchID") int branchID,
-                                  @PathVariable("itemID") int itemID,
-                                  @PathVariable("year") int year,
-                                  @PathVariable("quarter") int quarter){
-        return serviceImpl.deleteAll(bankID, branchID, itemID, year, quarter);
+                                  @PathVariable("itemID") int itemID){
+        return serviceImpl.deleteAll(bankID, branchID, itemID);
     }
 
     @RequestMapping(value="/api/detail/deleteImage/{bankID}/{branchID}/{itemID}/{detailID}", method = RequestMethod.DELETE)

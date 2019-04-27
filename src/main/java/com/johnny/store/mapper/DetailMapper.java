@@ -7,11 +7,11 @@ import java.util.List;
 
 @Mapper
 public interface DetailMapper extends BaseMapper<DetailEntity>{
-    List<DetailEntity> searchList4Item(int bankID, int branchID, int itemID, int year, int quarter);
+    List<DetailEntity> searchList4Item(int bankID, int branchID, int itemID);
 
     List<DetailEntity> searchFileList(int bankID, int branchID, String fileName);
 
-    int deleteAll(int bankID, int branchID, int itemID, int year, int quarter);
+    int deleteAll(int bankID, int branchID, int itemID);
 
     int deleteImageMemo(int bankID, int branchID, int itemID, int textMapDetail);
 

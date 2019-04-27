@@ -133,12 +133,10 @@
     FROM `Detail`
     WHERE BankID = #{arg0,jdbcType=INTEGER}
       AND BranchID = #{arg1,jdbcType=INTEGER}
-      AND ItemID = #{arg2,jdbcType=INTEGER}
-      AND Year = #{arg3,jdbcType=INTEGER}
-      AND Quarter = #{arg4,jdbcType=INTEGER};
+      AND ItemID = #{arg2,jdbcType=INTEGER};
   </select>
 
-  <insert id="insert" parameterType="com.johnny.store.entity.DetailEntity" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="detailID" parameterType="com.johnny.store.entity.DetailEntity" >
     INSERT INTO `Detail` (
       BankID,
       BranchID,
@@ -173,8 +171,6 @@
     WHERE BankID = #{arg0,jdbcType=INTEGER}
       AND BranchID = #{arg1,jdbcType=INTEGER}
       AND ItemID = #{arg2,jdbcType=INTEGER}
-      AND Year = #{arg3,jdbcType=INTEGER}
-      AND Quarter = #{arg4,jdbcType=INTEGER}
   </delete>
 
   <delete id="deleteImageMemo" parameterType="java.lang.Integer" >

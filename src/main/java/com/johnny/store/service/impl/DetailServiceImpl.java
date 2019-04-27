@@ -31,10 +31,10 @@ public class DetailServiceImpl implements DetailService {
     private DetailMapper detailMapper;
 
     @Override
-    public UnifiedResponse findList4Item(int bankID, int branchID, int itemID, int year, int quarter) {
+    public UnifiedResponse findList4Item(int bankID, int branchID, int itemID) {
         try {
             List<DetailVO> modelList = new ArrayList<>();
-            List<DetailEntity> entityList =  detailMapper.searchList4Item(bankID, branchID, itemID, year, quarter);
+            List<DetailEntity> entityList =  detailMapper.searchList4Item(bankID, branchID, itemID);
             if(entityList == null){
                 return UnifiedResponseManager.buildSuccessResponse(0, null);
             }
@@ -67,12 +67,9 @@ public class DetailServiceImpl implements DetailService {
     }
 
     @Override
-    public UnifiedResponse deleteAll(int bankID, int branchID, int itemID, int year, int quarter) {
+    public UnifiedResponse deleteAll(int bankID, int branchID, int itemID) {
         try {
-            String itemName = year + "年第" + quarter + "季度";
-            int affectItemRow = itemMapper.deleteDetailOfItem(bankID, branchID, itemID, itemName);
-            int affectDetailRow = detailMapper.deleteAll(bankID, branchID, itemID, year, quarter);
-            int affectRow = affectItemRow + affectDetailRow;
+            int affectRow = detailMapper.deleteAll(bankID, branchID, itemID);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
             LogUtils.processExceptionLog(ex);
@@ -150,11 +147,13 @@ public class DetailServiceImpl implements DetailService {
     public UnifiedResponse add(DetailDTO dto) {
         try {
             DetailEntity entity = convertDtoToEntity(dto);
+            /*
             if(dto.getContentType().equals("T")){
                 int deleteRow = detailMapper.deleteImageMemo(entity.getBankID(), entity.getBranchID(), entity.getItemID(), entity.getTextMapDetail());
             }
+            */
             int affectRow = detailMapper.insert(entity);
-            return UnifiedResponseManager.buildSuccessResponse(affectRow);
+            return UnifiedResponseManager.buildSuccessResponseWithID(affectRow, entity.getDetailID());
         } catch (Exception ex) {
             LogUtils.processExceptionLog(ex);
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);

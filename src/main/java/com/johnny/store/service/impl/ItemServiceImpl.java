@@ -26,6 +26,9 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemMapper itemMapper;
 
+    @Autowired
+    private DetailMapper detailMapper;
+
     @Override
     public UnifiedResponse findListItems(int bankID, int branchID) {
         try {
@@ -127,6 +130,8 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+
+
     @Override
     public UnifiedResponse change(ItemDTO dto) {
         try {
@@ -141,8 +146,16 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public UnifiedResponse delete(int id) {
+        return null;
+    }
+
+    @Override
+    public UnifiedResponse delete(int bankID, int branchID, int itemID, String itemType) {
         try {
-            int affectRow = itemMapper.delete(id);
+            int affectRow = itemMapper.delete(itemID);
+            if("D".equals(itemType)){
+                detailMapper.deleteAll(bankID, branchID, itemID);
+            }
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
             LogUtils.processExceptionLog(ex);

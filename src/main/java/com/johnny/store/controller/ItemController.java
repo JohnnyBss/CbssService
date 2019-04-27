@@ -60,8 +60,12 @@ public class ItemController {
         return serviceImpl.change(dto);
     }
 
-    @RequestMapping(value="/api/item/{id}", method = RequestMethod.DELETE)
-    public UnifiedResponse delete(@PathVariable("id") int id){
-        return serviceImpl.delete(id);
+    @RequestMapping(value="/api/item/{bankID}/{branchID}/{itemID}/{itemType}", method = RequestMethod.DELETE)
+    public UnifiedResponse delete(@PathVariable("bankID") int bankID,
+                                  @PathVariable("branchID") int branchID,
+                                  @PathVariable("itemID") int itemID,
+                                  @PathVariable("itemType") String itemType
+                                  ){
+        return serviceImpl.delete(bankID, branchID, itemID, itemType);
     }
 }

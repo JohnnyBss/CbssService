@@ -129,6 +129,12 @@
       LastEditUser = #{lastEditUser,jdbcType=VARCHAR}
     WHERE ItemID = #{itemID,jdbcType=INTEGER}
   </update>
+  <update id="moveItem" parameterType="com.johnny.store.entity.ItemEntity" >
+    UPDATE `Item` SET
+      ParentItemID = #{parentItemID,jdbcType=INTEGER},
+      LastEditUser = #{lastEditUser,jdbcType=VARCHAR}
+    WHERE ItemID = #{itemID,jdbcType=INTEGER}
+  </update>
   <delete id="delete" parameterType="java.lang.Integer" >
     DELETE FROM `Item`
     WHERE ItemID = #{id,jdbcType=INTEGER}

@@ -164,6 +164,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public UnifiedResponse move(ItemDTO dto) {
+        try {
+            ItemEntity entity = convertDtoToEntity(dto);
+            int affectRow = itemMapper.moveItem(entity);
+            return UnifiedResponseManager.buildSuccessResponse(affectRow);
+        } catch (Exception ex) {
+            LogUtils.processExceptionLog(ex);
+            return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
+        }
+    }
+
+    @Override
     public ItemVO convertEntityToVo(ItemEntity entity) {
         BankEntity bankEntity = bankMapper.search(entity.getBankID());
         BranchEntity branchEntity = branchMapper.search(entity.getBranchID());

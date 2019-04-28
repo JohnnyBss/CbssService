@@ -26,4 +26,6 @@ public interface ItemService extends BaseService<ItemDTO, ItemVO, ItemEntity> {
      * @return 删除结果
      */
     UnifiedResponse delete(int bankID, int branchID, int itemID, String itemType);
+
+    UnifiedResponse move(ItemDTO dto);
 }

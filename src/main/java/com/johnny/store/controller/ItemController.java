@@ -60,6 +60,11 @@ public class ItemController {
         return serviceImpl.change(dto);
     }
 
+    @RequestMapping(value="/api/item/move", method = RequestMethod.PUT)
+    public UnifiedResponse move(@RequestBody ItemDTO dto){
+        return serviceImpl.move(dto);
+    }
+
     @RequestMapping(value="/api/item/{bankID}/{branchID}/{itemID}/{itemType}", method = RequestMethod.DELETE)
     public UnifiedResponse delete(@PathVariable("bankID") int bankID,
                                   @PathVariable("branchID") int branchID,

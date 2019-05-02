@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johnny.store.mapper.AdvertiseModuleMapper" >
+  <resultMap id="BaseResultMap" type="com.johnny.store.entity.AdvertiseModuleEntity" >
+    <id column="module_id" property="moduleID" jdbcType="INTEGER" />
+    <result column="module_name" property="moduleName" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="edit_user" property="editUser" jdbcType="VARCHAR" />
+    <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="searchTotalCount" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1) AS TotalCount
+    FROM advertise.advertise_module;
+  </select>
+  <select id="searchList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+      module_id,
+      module_name,
+      create_user,
+      DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') AS create_time,
+      edit_user,
+      DATE_FORMAT(edit_time, '%Y-%m-%d %H:%i:%s') AS edit_time
+    FROM advertise.advertise_module
+    ORDER BY create_time DESC
+    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
+  </select>
+  <select id="search" resultMap="BaseResultMap">
+    SELECT
+      module_id,
+      module_name,
+      create_user,
+      DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') AS create_time,
+      edit_user,
+      DATE_FORMAT(edit_time, '%Y-%m-%d %H:%i:%s') AS edit_time
+    FROM advertise.advertise_module
+    WHERE module_id = #{moduleID,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="moduleID" parameterType="com.johnny.store.entity.AdvertiseModuleEntity" >
+    INSERT INTO advertise.advertise_module (
+      module_id,
+      module_name,
+      create_user,
+      edit_user
+    )
+    VALUES (
+      #{moduleID, jdbcType=INTEGER},
+      #{moduleName, jdbcType=VARCHAR},
+      #{createUser, jdbcType=VARCHAR},
+      #{editUser, jdbcType=VARCHAR}
+    )
+  </insert>
+  <update id="update" parameterType="com.johnny.store.entity.AdvertiseModuleEntity" >
+    UPDATE advertise.advertise_module SET
+      module_name = #{moduleName,jdbcType=NVARCHAR},
+      edit_user = #{editUser,jdbcType=VARCHAR}
+    WHERE module_id = #{moduleID,jdbcType=INTEGER}
+  </update>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    DELETE FROM advertise.advertise_module
+    WHERE module_id = #{moduleID,jdbcType=INTEGER}
+  </delete>
+</mapper>

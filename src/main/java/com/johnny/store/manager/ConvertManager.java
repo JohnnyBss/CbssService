@@ -185,6 +185,7 @@ public class ConvertManager {
         userVO.setBranchID(entity.getBranchID());
         userVO.setUserID(entity.getUserID());
         userVO.setUserName(entity.getUserName());
+        userVO.setUserRole(entity.getUserRole());
         userVO.setCellphone(entity.getCellphone());
         userVO.setInUser(entity.getInUser());
         userVO.setInDate(entity.getInDate());
@@ -343,6 +344,7 @@ public class ConvertManager {
         userEntity.setBranchID(dto.getBranchID());
         userEntity.setUserID(dto.getUserID());
         userEntity.setUserName(dto.getUserName());
+        userEntity.setUserRole(dto.getUserRole());
         userEntity.setPassword(dto.getPassword());
         userEntity.setCellphone(dto.getCellphone());
         userEntity.setInUser(dto.getLoginUser());

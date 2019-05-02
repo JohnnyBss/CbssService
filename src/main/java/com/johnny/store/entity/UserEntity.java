@@ -5,6 +5,7 @@ public class UserEntity extends BaseEntity {
     private int bankID;
     private int branchID;
     private String userName;
+    private String userRole;
     private String cellphone;
     private String password;
 
@@ -54,5 +55,13 @@ public class UserEntity extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 }

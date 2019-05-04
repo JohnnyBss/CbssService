@@ -6,7 +6,9 @@ public class UserVO extends BaseVO {
     private int branchID;
     private String userName;
     private String userRole;
+    private String userRoleText;
     private String cellphone;
+    private String userPhoto;
     private String password;
 
     public int getUserID() {
@@ -63,5 +65,21 @@ public class UserVO extends BaseVO {
 
     public void setUserRole(String userRole) {
         this.userRole = userRole;
+    }
+
+    public String getUserPhoto() {
+        return userPhoto;
+    }
+
+    public void setUserPhoto(String userPhoto) {
+        this.userPhoto = userPhoto;
+    }
+
+    public String getUserRoleText() {
+        return userRoleText;
+    }
+
+    public void setUserRoleText(String userRoleText) {
+        this.userRoleText = userRoleText;
     }
 }

@@ -186,6 +186,8 @@ public class ConvertManager {
         userVO.setUserID(entity.getUserID());
         userVO.setUserName(entity.getUserName());
         userVO.setUserRole(entity.getUserRole());
+        userVO.setUserRoleText(entity.getUserRoleText());
+        userVO.setUserPhoto(entity.getUserPhoto());
         userVO.setCellphone(entity.getCellphone());
         userVO.setInUser(entity.getInUser());
         userVO.setInDate(entity.getInDate());
@@ -345,6 +347,7 @@ public class ConvertManager {
         userEntity.setUserID(dto.getUserID());
         userEntity.setUserName(dto.getUserName());
         userEntity.setUserRole(dto.getUserRole());
+        userEntity.setUserPhoto(dto.getUserPhoto());
         userEntity.setPassword(dto.getPassword());
         userEntity.setCellphone(dto.getCellphone());
         userEntity.setInUser(dto.getLoginUser());

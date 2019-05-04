@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/api/user/login/{cellphone}/{password}", method = RequestMethod.GET)
-    public UnifiedResponse get4Module(@PathVariable("cellphone") String cellphone, @PathVariable("password") String password){
+    public UnifiedResponse login(@PathVariable("cellphone") String cellphone, @PathVariable("password") String password){
         return serviceImpl.find4Login(cellphone, password);
     }
 

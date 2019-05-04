@@ -6,6 +6,8 @@ public class UserEntity extends BaseEntity {
     private int branchID;
     private String userName;
     private String userRole;
+    private String userPhoto;
+    private String userRoleText;
     private String cellphone;
     private String password;
 
@@ -63,5 +65,21 @@ public class UserEntity extends BaseEntity {
 
     public void setUserRole(String userRole) {
         this.userRole = userRole;
+    }
+
+    public String getUserPhoto() {
+        return userPhoto;
+    }
+
+    public void setUserPhoto(String userPhoto) {
+        this.userPhoto = userPhoto;
+    }
+
+    public String getUserRoleText() {
+        return userRoleText;
+    }
+
+    public void setUserRoleText(String userRoleText) {
+        this.userRoleText = userRoleText;
     }
 }

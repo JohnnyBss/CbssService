@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johnny.store.mapper.ClockStatusMapper" >
+  <resultMap id="BaseResultMap" type="com.johnny.store.entity.ClockStatusEntity" >
+    <id column="clock_status_id" property="clockStatusID" jdbcType="INTEGER" />
+    <result column="clock_user_id" property="clockUserID" jdbcType="INTEGER" />
+    <result column="UserName" property="userName" jdbcType="VARCHAR" />
+    <result column="Cellphone" property="cellphone" jdbcType="VARCHAR" />
+    <result column="user_role" property="userRole" jdbcType="VARCHAR" />
+    <result column="user_role_text" property="userRoleText" jdbcType="VARCHAR" />
+    <result column="user_photo" property="userPhoto" jdbcType="VARCHAR" />
+    <result column="clock_user_status" property="clockUserStatus" jdbcType="VARCHAR" />
+    <result column="clock_user_status_text" property="clockUserStatusText" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="edit_user" property="editUser" jdbcType="VARCHAR" />
+    <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="searchTotalCount" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1) AS TotalCount
+    FROM call_center.clock_status;
+  </select>
+  <select id="searchList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+      clock_status_id,
+      clock_user_id,
+      clock_user_status,
+      create_user,
+      DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') AS create_time,
+      edit_user,
+      DATE_FORMAT(edit_time, '%Y-%m-%d %H:%i:%s') AS edit_time
+    FROM call_center.clock_status
+    ORDER BY clock_status_id
+    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
+  </select>
+  <select id="searchCurrentClockStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+      B.clock_status_id,
+      B.clock_user_id,
+      B.UserName,
+      B.Cellphone,
+      B.user_role,
+      case when B.user_role = '0' then '管理员'
+        when B.user_role = '1' then '普通职员'
+        when B.user_role = '2' then '理财经理'
+        when B.user_role = '3' then '大堂经理'
+        else '未知'
+      end as user_role_text,
+      B.user_photo,
+      B.clock_user_status,
+      case when B.clock_user_status = '0' then '到岗'
+        when B.clock_user_status = '1' then '空闲'
+        when B.clock_user_status = '2' then '繁忙'
+        when B.clock_user_status = '3' then '离开'
+        else '离岗'
+      end as clock_user_status_text,
+      B.create_user,
+      B.create_time,
+      B.edit_user,
+      B.edit_time
+    from
+      (
+        select
+          clock_user_id,
+          max(clock_status_id) as clock_status_id
+        from call_center.clock_status
+        group by clock_user_id
+      ) A
+    inner join
+      (
+        select
+          t_clock.clock_status_id,
+          t_clock.clock_user_id,
+          t_user.UserName,
+          t_user.Cellphone,
+          t_user.user_role,
+          t_user.user_photo,
+          t_clock.clock_user_status,
+          t_clock.create_user,
+          t_clock.create_time,
+          t_clock.edit_user,
+          t_clock.edit_time
+        from call_center.clock_status t_clock
+        inner join  CBSS.User t_user
+        on t_clock.clock_user_id = t_user.UserID
+      ) B
+    on A.clock_status_id = B.clock_status_id
+    order by B.create_time desc
+    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
+  </select>
+  <select id="search" resultMap="BaseResultMap">
+    select
+      B.clock_status_id,
+      B.clock_user_id,
+      B.UserName,
+      B.Cellphone,
+      B.user_role,
+      case when B.user_role = '0' then '管理员'
+        when B.user_role = '1' then '普通职员'
+        when B.user_role = '2' then '理财经理'
+        when B.user_role = '3' then '大堂经理'
+        else '未知'
+      end as user_role_text,
+      B.user_photo,
+      B.clock_user_status,
+      case when B.clock_user_status = '0' then '到岗'
+        when B.clock_user_status = '1' then '空闲'
+        when B.clock_user_status = '2' then '繁忙'
+        when B.clock_user_status = '3' then '离开'
+        else '离岗'
+      end as clock_user_status_text,
+      B.create_user,
+      B.create_time,
+      B.edit_user,
+      B.edit_time
+    from
+      (
+        select
+          clock_user_id,
+          max(clock_status_id) as clock_status_id
+        from call_center.clock_status
+        group by clock_user_id
+      ) A
+    inner join
+      (
+        select
+          t_clock.clock_status_id,
+          t_clock.clock_user_id,
+          t_user.UserName,
+          t_user.Cellphone,
+          t_user.user_role,
+          t_user.user_photo,
+          t_clock.clock_user_status,
+          t_clock.create_user,
+          t_clock.create_time,
+          t_clock.edit_user,
+          t_clock.edit_time
+        from call_center.clock_status t_clock
+        inner join  CBSS.User t_user
+        on t_clock.clock_user_id = t_user.UserID
+      ) B
+    on A.clock_status_id = B.clock_status_id
+    where a.clock_user_id = #{clockUserID,jdbcType=INTEGER};
+    </select>
+  <select id="searchByName" resultMap="BaseResultMap">
+
+  </select>
+  <insert id="insert" parameterType="com.johnny.store.entity.ClockStatusEntity" >
+    INSERT INTO call_center.clock_status (
+      clock_user_id,
+      clock_user_status,
+      create_user,
+      edit_user
+    )
+    VALUES (
+      #{clockUserID, jdbcType=INTEGER},
+      #{clockUserStatus, jdbcType=VARCHAR},
+      #{createUser, jdbcType=VARCHAR},
+      #{editUser, jdbcType=VARCHAR}
+    )
+  </insert>
+  <update id="update" parameterType="com.johnny.store.entity.ClockStatusEntity" >
+
+  </update>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    DELETE FROM call_center.clock_status
+    WHERE clock_status_id = #{id,jdbcType=INTEGER}
+  </delete>
+</mapper>

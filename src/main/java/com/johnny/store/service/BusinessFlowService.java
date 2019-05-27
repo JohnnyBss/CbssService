@@ -7,9 +7,17 @@ import com.johnny.store.vo.UnifiedResponse;
 
 public interface BusinessFlowService extends BaseService<BusinessFlowDTO, BusinessFlowVO, BusinessFlowEntity> {
 
-    UnifiedResponse findBusinessFlow4Receiver(int pageNumber, int pageSize, int receiveUserID);
+    UnifiedResponse findLatestBusiness(int userID);
+
+    UnifiedResponse findReceiveBusiness(int userID);
+
+    UnifiedResponse findWaitBusiness4Receive(int userID);
+
+    UnifiedResponse findSendBusiness(int userID);
 
     UnifiedResponse changeStatus(BusinessFlowDTO dto);
+
+    UnifiedResponse changeCallBack(BusinessFlowDTO dto);
 
     UnifiedResponse changeToComplete(BusinessFlowDTO dto);
 }

@@ -20,9 +20,24 @@ public class BusinessFlowController {
         return serviceImpl.findList(pageNumber, pageSize);
     }
 
-    @RequestMapping(value = "/api/business/{pageNumber}/{pageSize}/{receiveUserID}", method = RequestMethod.GET)
-    public UnifiedResponse get(@PathVariable("pageNumber") int pageNumber, @PathVariable("pageSize") int pageSize, @PathVariable("receiveUserID") int receiveUserID){
-        return serviceImpl.findBusinessFlow4Receiver(pageNumber, pageSize, receiveUserID);
+    @RequestMapping(value = "/api/business/receive/latest/{userID}", method = RequestMethod.GET)
+    public UnifiedResponse getLatestBusiness(@PathVariable("userID") int userID){
+        return serviceImpl.findLatestBusiness(userID);
+    }
+
+    @RequestMapping(value = "/api/business/receive/{userID}", method = RequestMethod.GET)
+    public UnifiedResponse getReceiveBusiness(@PathVariable("userID") int userID){
+        return serviceImpl.findReceiveBusiness(userID);
+    }
+
+    @RequestMapping(value = "/api/business/wait/{userID}", method = RequestMethod.GET)
+    public UnifiedResponse hasWaitBusiness(@PathVariable("userID") int userID){
+        return serviceImpl.findWaitBusiness4Receive(userID);
+    }
+
+    @RequestMapping(value = "/api/business/send/{userID}", method = RequestMethod.GET)
+    public UnifiedResponse getSendBusiness(@PathVariable("userID") int userID){
+        return serviceImpl.findSendBusiness(userID);
     }
 
     @RequestMapping(value = "/api/business/{businessID}", method = RequestMethod.GET)
@@ -35,12 +50,17 @@ public class BusinessFlowController {
         return serviceImpl.changeStatus(dto);
     }
 
+    @RequestMapping(value="/api/business/callback", method = RequestMethod.PUT)
+    public UnifiedResponse changeCallBack(@RequestBody BusinessFlowDTO dto){
+        return serviceImpl.changeCallBack(dto);
+    }
+
     @RequestMapping(value="/api/business/complete", method = RequestMethod.PUT)
     public UnifiedResponse changeToComplete(@RequestBody BusinessFlowDTO dto){
         return serviceImpl.changeToComplete(dto);
     }
 
-    @RequestMapping(value="/api/business", method = RequestMethod.POST)
+    @RequestMapping(value="/api/business/send", method = RequestMethod.POST)
     public UnifiedResponse post(@RequestBody BusinessFlowDTO dto){
         return serviceImpl.add(dto);
     }

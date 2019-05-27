@@ -82,7 +82,7 @@
           t_clock.edit_user,
           t_clock.edit_time
         from call_center.clock_status t_clock
-        inner join  CBSS.User t_user
+        inner join  cbss.User t_user
         on t_clock.clock_user_id = t_user.UserID
       ) B
     on A.clock_status_id = B.clock_status_id
@@ -137,12 +137,32 @@
           t_clock.edit_user,
           t_clock.edit_time
         from call_center.clock_status t_clock
-        inner join  CBSS.User t_user
+        inner join  cbss.User t_user
         on t_clock.clock_user_id = t_user.UserID
       ) B
     on A.clock_status_id = B.clock_status_id
     where a.clock_user_id = #{clockUserID,jdbcType=INTEGER};
-    </select>
+  </select>
+  <select id="searchFinancialCurrentClock" resultMap="BaseResultMap">
+    select
+      clock_status_id,
+      clock_user_id,
+      clock_user_status,
+      case when clock_user_status = '0' then '到岗'
+        when clock_user_status = '1' then '空闲'
+        when clock_user_status = '2' then '繁忙'
+        when clock_user_status = '3' then '离开'
+        else '离岗'
+      end as clock_user_status_text,
+      create_user,
+      create_time,
+      edit_user,
+      edit_time
+    from call_center.clock_status
+    where clock_user_id = #{userID,jdbcType=INTEGER}
+    order by create_time desc
+    limit 1;
+  </select>
   <select id="searchByName" resultMap="BaseResultMap">
 
   </select>

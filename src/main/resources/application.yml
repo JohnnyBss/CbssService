@@ -4,7 +4,7 @@ server:
 spring:
     datasource:
         name: test
-        url: jdbc:mysql://localhost:3306/CBSS?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        url: jdbc:mysql://localhost:3306/cbss?useSSL=false&useUnicode=true&characterEncoding=UTF-8
         username: root
         password: johnny0627
         # 使用druid数据源

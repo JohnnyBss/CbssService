@@ -9,6 +9,7 @@ public class UserVO extends BaseVO {
     private String userRoleText;
     private String cellphone;
     private String userPhoto;
+    private String userResume;
     private String password;
 
     public int getUserID() {
@@ -81,5 +82,13 @@ public class UserVO extends BaseVO {
 
     public void setUserRoleText(String userRoleText) {
         this.userRoleText = userRoleText;
+    }
+
+    public String getUserResume() {
+        return userResume;
+    }
+
+    public void setUserResume(String userResume) {
+        this.userResume = userResume;
     }
 }

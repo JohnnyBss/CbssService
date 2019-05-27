@@ -10,8 +10,6 @@ public class BusinessFlowVO extends NewBaseVO {
     private String sendUserPhoto;
     private String sendTime;
 
-
-
     private Integer receiveUserID;
     private String receiveUserName;
     private String receiveUserCellphone;
@@ -20,9 +18,9 @@ public class BusinessFlowVO extends NewBaseVO {
     private String receiveUserPhoto;
     private String receiveTime;
 
-
     private String businessStatus;
     private String businessStatusText;
+    private String callBackMessage;
     private String completeTime;
 
     public Integer getBusinessID() {
@@ -167,5 +165,13 @@ public class BusinessFlowVO extends NewBaseVO {
 
     public void setBusinessStatusText(String businessStatusText) {
         this.businessStatusText = businessStatusText;
+    }
+
+    public String getCallBackMessage() {
+        return callBackMessage;
+    }
+
+    public void setCallBackMessage(String callBackMessage) {
+        this.callBackMessage = callBackMessage;
     }
 }

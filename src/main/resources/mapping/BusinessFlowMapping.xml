@@ -19,6 +19,7 @@
     <result column="receive_time" property="receiveTime" jdbcType="VARCHAR" />
     <result column="business_status" property="businessStatus" jdbcType="VARCHAR" />
     <result column="business_status_text" property="businessStatusText" jdbcType="VARCHAR" />
+    <result column="call_back_msg" property="callBackMessage" jdbcType="VARCHAR" />
     <result column="complete_time" property="completeTime" jdbcType="VARCHAR" />
     <result column="create_user" property="createUser" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -43,7 +44,7 @@
           else '未知'
       end as send_user_role_text,
       B.user_photo as send_user_photo,
-      A.send_time,
+      DATE_FORMAT(A.send_time, '%Y-%m-%d %H:%i:%s') AS send_time,
       A.receive_user_id,
       C.UserName as receive_user_name,
       C.Cellphone as receive_user_cellphone,
@@ -55,27 +56,30 @@
       else '未知'
       end as receive_user_role_text,
       C.user_photo as receive_user_photo,
-      A.receive_time,
+      DATE_FORMAT(A.receive_time, '%Y-%m-%d %H:%i:%s') AS receive_time,
       A.business_status,
       case when A.business_status = '0' then '等待回复'
       when A.business_status = '1' then '确认接单'
       when A.business_status = '2' then '拒绝'
       when A.business_status = '3' then '完成'
-      else '未知'
+      when A.business_status = '4' then '回呼'
+      else '未知业务状态'
       end as business_status_text,
-      A.complete_time,
+      A.call_back_msg,
+      DATE_FORMAT(A.complete_time, '%Y-%m-%d %H:%i:%s') AS complete_time,
       A.create_user,
       A.create_time,
       A.edit_user,
       A.edit_time
     from call_center.business_flow A
-    inner join cbss.User B
+    inner join `User` B
     on A.send_user_id = B.UserID
-    inner join cbss.User C
+    inner join `User` C
     on A.receive_user_id = C.UserID
     order by A.create_time desc
     LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
   </select>
+
   <select id="search" resultMap="BaseResultMap">
     select
       A.business_id,
@@ -90,7 +94,7 @@
           else '未知'
       end as send_user_role_text,
       B.user_photo as send_user_photo,
-      A.send_time,
+      DATE_FORMAT(A.send_time, '%Y-%m-%d %H:%i:%s') AS send_time,
       A.receive_user_id,
       C.UserName as receive_user_name,
       C.Cellphone as receive_user_cellphone,
@@ -102,26 +106,80 @@
       else '未知'
       end as receive_user_role_text,
       C.user_photo as receive_user_photo,
-      A.receive_time,
+      DATE_FORMAT(A.receive_time, '%Y-%m-%d %H:%i:%s') AS receive_time,
       A.business_status,
       case when A.business_status = '0' then '等待回复'
       when A.business_status = '1' then '确认接单'
       when A.business_status = '2' then '拒绝'
       when A.business_status = '3' then '完成'
-      else '未知'
+      when A.business_status = '4' then '回呼'
+      else '未知业务状态'
       end as business_status_text,
-      A.complete_time,
+      A.call_back_msg,
+      DATE_FORMAT(A.complete_time, '%Y-%m-%d %H:%i:%s') AS complete_time,
       A.create_user,
       A.create_time,
       A.edit_user,
       A.edit_time
     from call_center.business_flow A
-    inner join cbss.User B
+    inner join `User` B
     on A.send_user_id = B.UserID
-    inner join cbss.User C
+    inner join `User` C
     on A.receive_user_id = C.UserID
     where A.business_id = #{businessID,jdbcType=INTEGER};
     </select>
+
+  <select id="searchLatestBusiness" resultMap="BaseResultMap">
+    select
+      A.business_id,
+      A.send_user_id,
+      B.UserName as send_user_name,
+      B.Cellphone as send_user_cellphone,
+      B.user_role as send_user_role,
+      case when B.user_role = '0' then '管理员'
+          when B.user_role = '1' then '普通职员'
+          when B.user_role = '2' then '理财经理'
+          when B.user_role = '3' then '大堂经理'
+          else '未知'
+      end as send_user_role_text,
+      B.user_photo as send_user_photo,
+      DATE_FORMAT(A.send_time, '%Y-%m-%d %H:%i:%s') AS send_time,
+      A.receive_user_id,
+      C.UserName as receive_user_name,
+      C.Cellphone as receive_user_cellphone,
+      C.user_role as receive_user_role,
+      case when C.user_role = '0' then '管理员'
+      when C.user_role = '1' then '普通职员'
+      when C.user_role = '2' then '理财经理'
+      when C.user_role = '3' then '大堂经理'
+      else '未知'
+      end as receive_user_role_text,
+      C.user_photo as receive_user_photo,
+      DATE_FORMAT(A.receive_time, '%Y-%m-%d %H:%i:%s') AS receive_time,
+      A.business_status,
+      case when A.business_status = '0' then '等待回复'
+      when A.business_status = '1' then '确认接单'
+      when A.business_status = '2' then '拒绝'
+      when A.business_status = '3' then '完成'
+      when A.business_status = '4' then '回呼'
+      else '未知业务状态'
+      end as business_status_text,
+      A.call_back_msg,
+      DATE_FORMAT(A.complete_time, '%Y-%m-%d %H:%i:%s') AS complete_time,
+      A.create_user,
+      A.create_time,
+      A.edit_user,
+      A.edit_time
+    from call_center.business_flow A
+    inner join `User` B
+    on A.send_user_id = B.UserID
+    inner join `User` C
+    on A.receive_user_id = C.UserID
+    where A.receive_user_id = #{arg0,jdbcType=INTEGER}
+    and A.create_time between #{arg1,jdbcType=VARCHAR} and #{arg2,jdbcType=VARCHAR}
+    and A.business_status = '0'
+    order by A.create_time desc;
+  </select>
 
   <select id="search4ReceiveUser" resultMap="BaseResultMap">
     select
@@ -137,7 +195,7 @@
           else '未知'
       end as send_user_role_text,
       B.user_photo as send_user_photo,
-      A.send_time,
+      DATE_FORMAT(A.send_time, '%Y-%m-%d %H:%i:%s') AS send_time,
       A.receive_user_id,
       C.UserName as receive_user_name,
       C.Cellphone as receive_user_cellphone,
@@ -149,15 +207,95 @@
       else '未知'
       end as receive_user_role_text,
       C.user_photo as receive_user_photo,
-      A.receive_time,
+      DATE_FORMAT(A.receive_time, '%Y-%m-%d %H:%i:%s') AS receive_time,
       A.business_status,
       case when A.business_status = '0' then '等待回复'
       when A.business_status = '1' then '确认接单'
       when A.business_status = '2' then '拒绝'
       when A.business_status = '3' then '完成'
-      else '未知'
+      when A.business_status = '4' then '回呼'
+      else '未知业务状态'
       end as business_status_text,
-      A.complete_time,
+      DATE_FORMAT(A.complete_time, '%Y-%m-%d %H:%i:%s') AS complete_time,
+      A.create_user,
+      A.create_time,
+      A.edit_user,
+      A.edit_time
+    from call_center.business_flow A
+    inner join `User` B
+    on A.send_user_id = B.UserID
+    inner join `User` C
+    on A.receive_user_id = C.UserID
+    where A.receive_user_id = #{arg0,jdbcType=INTEGER}
+    and A.create_time between #{arg1,jdbcType=VARCHAR} and #{arg2,jdbcType=VARCHAR}
+    order by A.create_time desc;
+  </select>
+
+  <select id="searchWaitBusiness4Receive" resultMap="BaseResultMap">
+    select
+      business_id,
+      send_user_id,
+      DATE_FORMAT(send_time, '%Y-%m-%d %H:%i:%s') AS send_time,
+      receive_user_id,
+      DATE_FORMAT(receive_time, '%Y-%m-%d %H:%i:%s') AS receive_time,
+      business_status,
+      case when business_status = '0' then '等待回复'
+      when business_status = '1' then '确认接单'
+      when business_status = '2' then '拒绝'
+      when business_status = '3' then '完成'
+      when business_status = '4' then '回呼'
+      else '未知业务状态'
+      end as business_status_text,
+      call_back_msg,
+      DATE_FORMAT(complete_time, '%Y-%m-%d %H:%i:%s') AS complete_time,
+      create_user,
+      create_time,
+      edit_user,
+      edit_time
+    from call_center.business_flow
+    where receive_user_id = #{arg0,jdbcType=INTEGER}
+    and business_status = '0'
+    and create_time between #{arg1,jdbcType=VARCHAR} and #{arg2,jdbcType=VARCHAR}
+    limit 1;
+  </select>
+
+  <select id="search4SendUser" resultMap="BaseResultMap">
+    select
+      A.business_id,
+      A.send_user_id,
+      B.UserName as send_user_name,
+      B.Cellphone as send_user_cellphone,
+      B.user_role as send_user_role,
+      case when B.user_role = '0' then '管理员'
+          when B.user_role = '1' then '普通职员'
+          when B.user_role = '2' then '理财经理'
+          when B.user_role = '3' then '大堂经理'
+          else '未知'
+      end as send_user_role_text,
+      B.user_photo as send_user_photo,
+      DATE_FORMAT(A.send_time, '%Y-%m-%d %H:%i:%s') AS send_time,
+      A.receive_user_id,
+      C.UserName as receive_user_name,
+      C.Cellphone as receive_user_cellphone,
+      C.user_role as receive_user_role,
+      case when C.user_role = '0' then '管理员'
+      when C.user_role = '1' then '普通职员'
+      when C.user_role = '2' then '理财经理'
+      when C.user_role = '3' then '大堂经理'
+      else '未知'
+      end as receive_user_role_text,
+      C.user_photo as receive_user_photo,
+      DATE_FORMAT(A.receive_time, '%Y-%m-%d %H:%i:%s') AS receive_time,
+      A.business_status,
+      case when A.business_status = '0' then '等待回复'
+      when A.business_status = '1' then '确认接单'
+      when A.business_status = '2' then '拒绝'
+      when A.business_status = '3' then '完成'
+      when A.business_status = '4' then '回呼'
+      else '未知业务状态'
+      end as business_status_text,
+      A.call_back_msg,
+      DATE_FORMAT(A.complete_time, '%Y-%m-%d %H:%i:%s') AS complete_time,
       A.create_user,
       A.create_time,
       A.edit_user,
@@ -167,10 +305,10 @@
     on A.send_user_id = B.UserID
     inner join cbss.User C
     on A.receive_user_id = C.UserID
-    where A.receive_user_id = #{arg2,jdbcType=INTEGER}
-    order by A.create_time desc
-    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
-    </select>
+    where A.send_user_id = #{arg0,jdbcType=INTEGER}
+    and A.create_time between #{arg1,jdbcType=VARCHAR} and #{arg2,jdbcType=VARCHAR}
+    order by A.create_time desc;
+  </select>
 
   <select id="searchByName" resultMap="BaseResultMap">
 
@@ -193,6 +331,7 @@
       #{editUser, jdbcType=VARCHAR}
     )
   </insert>
+
   <update id="update" parameterType="com.johnny.store.entity.BusinessFlowEntity" >
 
   </update>
@@ -200,6 +339,13 @@
     UPDATE call_center.business_flow SET
       business_status = #{businessStatus,jdbcType=NVARCHAR},
       receive_time = #{receiveTime,jdbcType=NVARCHAR},
+      edit_user = #{editUser,jdbcType=VARCHAR}
+    WHERE business_id = #{businessID,jdbcType=INTEGER}
+  </update>
+  <update id="updateCallBack" parameterType="com.johnny.store.entity.BusinessFlowEntity" >
+    UPDATE call_center.business_flow SET
+      business_status = #{businessStatus,jdbcType=NVARCHAR},
+      call_back_msg = #{callBackMessage,jdbcType=NVARCHAR},
       edit_user = #{editUser,jdbcType=VARCHAR}
     WHERE business_id = #{businessID,jdbcType=INTEGER}
   </update>

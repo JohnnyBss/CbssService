@@ -8,6 +8,7 @@ public class UserEntity extends BaseEntity {
     private String userRole;
     private String userPhoto;
     private String userRoleText;
+    private String userResume;
     private String cellphone;
     private String password;
 
@@ -81,5 +82,13 @@ public class UserEntity extends BaseEntity {
 
     public void setUserRoleText(String userRoleText) {
         this.userRoleText = userRoleText;
+    }
+
+    public String getUserResume() {
+        return userResume;
+    }
+
+    public void setUserResume(String userResume) {
+        this.userResume = userResume;
     }
 }

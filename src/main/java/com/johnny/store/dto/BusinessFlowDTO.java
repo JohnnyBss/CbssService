@@ -7,6 +7,7 @@ public class BusinessFlowDTO extends BaseDTO {
     private Integer receiveUserID;
     private String receiveTime;
     private String businessStatus;
+    private String callBackMessage;
     private String completeTime;
 
     public Integer getBusinessID() {
@@ -63,5 +64,13 @@ public class BusinessFlowDTO extends BaseDTO {
 
     public void setCompleteTime(String completeTime) {
         this.completeTime = completeTime;
+    }
+
+    public String getCallBackMessage() {
+        return callBackMessage;
+    }
+
+    public void setCallBackMessage(String callBackMessage) {
+        this.callBackMessage = callBackMessage;
     }
 }

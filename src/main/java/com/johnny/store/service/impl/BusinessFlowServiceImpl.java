@@ -25,11 +25,73 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
     private BusinessFlowMapper businessFlowMapper;
 
     @Override
-    public UnifiedResponse findBusinessFlow4Receiver(int pageNumber, int pageSize, int receiveUserID) {
+    public UnifiedResponse findLatestBusiness(int userID) {
         try {
-            int startIndex = (pageNumber - 1) * pageSize;
             List<BusinessFlowVO> modelList = new ArrayList<>();
-            List<BusinessFlowEntity> entityList =  businessFlowMapper.search4ReceiveUser(startIndex, pageSize, receiveUserID);
+            String currentDate = DateUtils.getCurrentDateTime().substring(0, 10);
+            String fromDate = currentDate + " 00:00:00";
+            String toDate = currentDate + " 23:59:59";
+            List<BusinessFlowEntity> entityList =  businessFlowMapper.searchLatestBusiness(userID, fromDate, toDate);
+            if(entityList == null || entityList.size() == 0){
+                return UnifiedResponseManager.buildSuccessResponse(0, null);
+            }
+            for (BusinessFlowEntity entity : entityList) {
+                modelList.add(convertEntityToVo(entity));
+            }
+            return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
+        } catch (Exception ex) {
+            LogUtils.processExceptionLog(ex);
+            return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
+        }
+    }
+
+    @Override
+    public UnifiedResponse findReceiveBusiness(int userID) {
+        try {
+            List<BusinessFlowVO> modelList = new ArrayList<>();
+            String currentDate = DateUtils.getCurrentDateTime().substring(0, 10);
+            String fromDate = currentDate + " 00:00:00";
+            String toDate = currentDate + " 23:59:59";
+            List<BusinessFlowEntity> entityList =  businessFlowMapper.search4ReceiveUser(userID, fromDate, toDate);
+            if(entityList == null || entityList.size() == 0){
+                return UnifiedResponseManager.buildSuccessResponse(0, null);
+            }
+            for (BusinessFlowEntity entity : entityList) {
+                modelList.add(convertEntityToVo(entity));
+            }
+            return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
+        } catch (Exception ex) {
+            LogUtils.processExceptionLog(ex);
+            return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
+        }
+    }
+
+    @Override
+    public UnifiedResponse findWaitBusiness4Receive(int userID) {
+        try {
+            String currentDate = DateUtils.getCurrentDateTime().substring(0, 10);
+            String fromDate = currentDate + " 00:00:00";
+            String toDate = currentDate + " 23:59:59";
+            BusinessFlowEntity entity =  businessFlowMapper.searchWaitBusiness4Receive(userID, fromDate, toDate);
+            if(entity == null){
+                return UnifiedResponseManager.buildSuccessResponse(0, false);
+            }
+
+            return UnifiedResponseManager.buildSuccessResponse(1, true);
+        } catch (Exception ex) {
+            LogUtils.processExceptionLog(ex);
+            return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
+        }
+    }
+
+    @Override
+    public UnifiedResponse findSendBusiness(int userID) {
+        try {
+            List<BusinessFlowVO> modelList = new ArrayList<>();
+            String currentDate = DateUtils.getCurrentDateTime().substring(0, 10);
+            String fromDate = currentDate + " 00:00:00";
+            String toDate = currentDate + " 23:59:59";
+            List<BusinessFlowEntity> entityList =  businessFlowMapper.search4SendUser(userID, fromDate, toDate);
             if(entityList == null || entityList.size() == 0){
                 return UnifiedResponseManager.buildSuccessResponse(0, null);
             }
@@ -47,7 +109,21 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
     public UnifiedResponse changeStatus(BusinessFlowDTO dto) {
         try {
             BusinessFlowEntity entity = convertDtoToEntity(dto);
+            String receiveTime = DateUtils.getCurrentDateTime();
+            entity.setReceiveTime(receiveTime);
             int affectRow = businessFlowMapper.updateStatus(entity);
+            return UnifiedResponseManager.buildSuccessResponse(affectRow);
+        } catch (Exception ex) {
+            LogUtils.processExceptionLog(ex);
+            return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
+        }
+    }
+
+    @Override
+    public UnifiedResponse changeCallBack(BusinessFlowDTO dto) {
+        try {
+            BusinessFlowEntity entity = convertDtoToEntity(dto);
+            int affectRow = businessFlowMapper.updateCallBack(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
             LogUtils.processExceptionLog(ex);
@@ -58,7 +134,9 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
     @Override
     public UnifiedResponse changeToComplete(BusinessFlowDTO dto) {
         try {
+            String currentDate = DateUtils.getCurrentDateTime();
             BusinessFlowEntity entity = convertDtoToEntity(dto);
+            entity.setCompleteTime(currentDate);
             int affectRow = businessFlowMapper.updateToComplete(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
@@ -106,7 +184,10 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
     @Override
     public UnifiedResponse add(BusinessFlowDTO dto) {
         try {
+            String currentDate = DateUtils.getCurrentDateTime();
             BusinessFlowEntity entity = convertDtoToEntity(dto);
+            entity.setSendTime(currentDate);
+            entity.setBusinessStatus("0");
             int affectRow = businessFlowMapper.insert(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
@@ -145,6 +226,7 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
         businessFlowVO.setReceiveTime(entity.getReceiveTime());
         businessFlowVO.setBusinessStatus(entity.getBusinessStatus());
         businessFlowVO.setBusinessStatusText(entity.getBusinessStatusText());
+        businessFlowVO.setCallBackMessage(entity.getCallBackMessage());
         businessFlowVO.setCompleteTime(entity.getCompleteTime());
         businessFlowVO.setCreateUser(entity.getCreateUser());
         businessFlowVO.setCreateTime(entity.getCreateTime());
@@ -168,6 +250,7 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
         entity.setSendTime(dto.getSendTime());
         entity.setBusinessStatus(dto.getBusinessStatus());
         entity.setReceiveTime(DateUtils.getCurrentDateTime());
+        entity.setCallBackMessage(dto.getCallBackMessage());
         entity.setCompleteTime(DateUtils.getCurrentDateTime());
         entity.setCreateUser(dto.getLoginUser());
         entity.setEditUser(dto.getLoginUser());

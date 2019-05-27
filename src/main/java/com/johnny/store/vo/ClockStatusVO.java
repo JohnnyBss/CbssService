@@ -8,6 +8,7 @@ public class ClockStatusVO extends NewBaseVO {
     private String userRole;
     private String userRoleText;
     private String userPhoto;
+    private String userResume;
     private String clockUserStatus;
     private String clockUserStatusText;
 
@@ -81,5 +82,13 @@ public class ClockStatusVO extends NewBaseVO {
 
     public void setClockUserStatusText(String clockUserStatusText) {
         this.clockUserStatusText = clockUserStatusText;
+    }
+
+    public String getUserResume() {
+        return userResume;
+    }
+
+    public void setUserResume(String userResume) {
+        this.userResume = userResume;
     }
 }

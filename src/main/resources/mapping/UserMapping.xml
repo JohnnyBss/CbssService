@@ -9,6 +9,7 @@
     <result column="user_role" property="userRole" jdbcType="VARCHAR" />
     <result column="user_role_text" property="userRoleText" jdbcType="VARCHAR" />
     <result column="user_photo" property="userPhoto" jdbcType="VARCHAR" />
+    <result column="user_resume" property="userResume" jdbcType="VARCHAR" />
     <result column="Cellphone" property="cellphone" jdbcType="VARCHAR" />
     <result column="Password" property="password" jdbcType="VARCHAR" />
     <result column="InUser" property="inUser" jdbcType="VARCHAR" />
@@ -35,6 +36,7 @@
       ELSE '管理员'
       END AS user_role_text,
       user_photo,
+      user_resume,
       Cellphone,
       Password,
       InUser,
@@ -45,6 +47,32 @@
     ORDER BY InUser DESC
     LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
   </select>
+  <select id="searchListByRole" resultMap="BaseResultMap">
+    SELECT
+      UserID,
+      BankID,
+      BranchID,
+      UserName,
+      user_role,
+      CASE WHEN user_role = '0' THEN '管理员'
+      WHEN user_role = '1' THEN '普通职员'
+      WHEN user_role = '2' THEN '理财经理'
+      WHEN user_role = '3' THEN '大堂经理'
+      ELSE '管理员'
+      END AS user_role_text,
+      user_photo,
+      user_resume,
+      Cellphone,
+      Password,
+      InUser,
+      DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
+      LastEditUser,
+      DATE_FORMAT(LastEditDate, '%Y-%m-%d %H:%i:%s') AS LastEditDate
+    FROM `User`
+    WHERE user_role = #{arg0,jdbcType=VARCHAR}
+    ORDER BY InUser DESC
+    LIMIT #{arg1,jdbcType=INTEGER};
+  </select>
   <select id="search" resultMap="BaseResultMap">
     SELECT
       UserID,
@@ -53,6 +81,7 @@
       UserName,
       user_role,
       user_photo,
+      user_resume,
       Cellphone,
       Password,
       InUser,
@@ -76,6 +105,7 @@
       ELSE '管理员'
       END AS user_role_text,
       user_photo,
+      user_resume,
       Cellphone,
       Password,
       InUser,
@@ -99,6 +129,7 @@
       ELSE '管理员'
       END AS user_role_text,
       user_photo,
+      user_resume,
       Cellphone,
       Password,
       InUser,
@@ -116,6 +147,7 @@
       UserName,
       user_role,
       user_photo,
+      user_resume,
       Cellphone,
       Password,
       InUser,
@@ -127,6 +159,7 @@
       #{userName, jdbcType=VARCHAR},
       #{userRole, jdbcType=VARCHAR},
       #{userPhoto, jdbcType=VARCHAR},
+      #{userResume, jdbcType=VARCHAR},
       #{cellphone, jdbcType=VARCHAR},
       #{password, jdbcType=VARCHAR},
       #{inUser, jdbcType=VARCHAR},
@@ -139,6 +172,7 @@
       Cellphone = #{cellphone,jdbcType=NVARCHAR},
       user_role = #{userRole,jdbcType=VARCHAR},
       user_photo = #{userPhoto,jdbcType=VARCHAR},
+      user_resume = #{userResume,jdbcType=VARCHAR},
       LastEditUser = #{lastEditUser,jdbcType=VARCHAR}
     WHERE UserID = #{userID,jdbcType=INTEGER}
   </update>

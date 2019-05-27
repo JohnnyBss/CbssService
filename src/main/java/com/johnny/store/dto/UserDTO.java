@@ -8,6 +8,7 @@ public class UserDTO extends BaseDTO {
     private String userRole;
     private String cellphone;
     private String userPhoto;
+    private String userResume;
     private String password;
 
     public int getUserID() {
@@ -72,5 +73,13 @@ public class UserDTO extends BaseDTO {
 
     public void setUserPhoto(String userPhoto) {
         this.userPhoto = userPhoto;
+    }
+
+    public String getUserResume() {
+        return userResume;
+    }
+
+    public void setUserResume(String userResume) {
+        this.userResume = userResume;
     }
 }

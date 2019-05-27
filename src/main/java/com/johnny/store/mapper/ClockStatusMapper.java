@@ -8,4 +8,6 @@ import java.util.List;
 @Mapper
 public interface ClockStatusMapper extends BaseMapper<ClockStatusEntity> {
     List<ClockStatusEntity> searchCurrentClockStatus(int startIndex, int pageSize);
+
+    ClockStatusEntity searchFinancialCurrentClock(int userID);
 }

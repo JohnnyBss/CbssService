@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     public UnifiedResponse changePassword(UserDTO dto) {
         try {
             UserEntity entity = convertDtoToEntity(dto);
-            int affectRow = userMapper.update(entity);
+            int affectRow = userMapper.changePassword(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
             LogUtils.processExceptionLog(ex);
@@ -82,6 +82,7 @@ public class UserServiceImpl implements UserService {
         try {
             UserEntity entity =  userMapper.search(id);
             UserVO model = convertEntityToVo(entity);
+            model.setPassword(entity.getPassword());
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
             LogUtils.processExceptionLog(ex);

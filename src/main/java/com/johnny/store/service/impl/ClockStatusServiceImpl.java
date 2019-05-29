@@ -54,7 +54,7 @@ public class ClockStatusServiceImpl implements ClockStatusService {
             List<ClockStatusVO> modelList = new ArrayList<>();
 
             //取得理财经理人员信息
-            List<UserEntity> userEntityList = userMapper.searchListByRole("2", 6);
+            List<UserEntity> userEntityList = userMapper.searchListByRole(6);
             if(userEntityList == null || userEntityList.size() == 0){
                 return UnifiedResponseManager.buildSuccessResponse(0, null);
             }

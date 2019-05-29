@@ -12,12 +12,11 @@ public interface UserMapper extends BaseMapper<UserEntity> {
     UserEntity search4Login(String cellphone, String password);
 
     /**
-     * 取得某种角色的用户信息
-     * @param userRole 用户角色
+     * 取得理财经理和运营主管的用户信息
      * @param maxCount 最大数量
      * @return 用户信息
      */
-    List<UserEntity> searchListByRole(String userRole, int maxCount);
+    List<UserEntity> searchListByRole(int maxCount);
 
     int changePassword(UserEntity entity);
 }

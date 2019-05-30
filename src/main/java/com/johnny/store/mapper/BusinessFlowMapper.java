@@ -33,13 +33,12 @@ public interface BusinessFlowMapper extends BaseMapper<BusinessFlowEntity> {
      */
     BusinessFlowEntity searchWaitBusiness4Receive(int receiveID, String fromDate, String toDate);
     /**
-     * 取得业务承接者（理财经理）所有的业务流数据
-     * @param userID 业务承接者
+     * 取得指定日期范围所有的业务流数据
      * @param fromDate 业务日期起始时间
      * @param toDate 业务日期结束时间
-     * @return 业务承接者所有的业务数据
+     * @return 指定日期范围所有的业务流数据
      */
-    List<BusinessFlowEntity> search4SendUser(int userID, String fromDate, String toDate);
+    List<BusinessFlowEntity> search4SendUser(String fromDate, String toDate);
 
     /**
      * 更新业务流状态

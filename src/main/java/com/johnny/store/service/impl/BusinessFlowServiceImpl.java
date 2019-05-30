@@ -91,7 +91,7 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
             String currentDate = DateUtils.getCurrentDateTime().substring(0, 10);
             String fromDate = currentDate + " 00:00:00";
             String toDate = currentDate + " 23:59:59";
-            List<BusinessFlowEntity> entityList =  businessFlowMapper.search4SendUser(userID, fromDate, toDate);
+            List<BusinessFlowEntity> entityList =  businessFlowMapper.search4SendUser(fromDate, toDate);
             if(entityList == null || entityList.size() == 0){
                 return UnifiedResponseManager.buildSuccessResponse(0, null);
             }

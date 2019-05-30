@@ -305,8 +305,7 @@
     on A.send_user_id = B.UserID
     inner join cbss.User C
     on A.receive_user_id = C.UserID
-    where A.send_user_id = #{arg0,jdbcType=INTEGER}
-    and A.create_time between #{arg1,jdbcType=VARCHAR} and #{arg2,jdbcType=VARCHAR}
+    where A.create_time between #{arg0,jdbcType=VARCHAR} and #{arg1,jdbcType=VARCHAR}
     order by A.create_time desc;
   </select>
 

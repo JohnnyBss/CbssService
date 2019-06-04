@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johnny.store.mapper.BusinessHurryUpMapper" >
+  <resultMap id="BaseResultMap" type="com.johnny.store.entity.BusinessHurryUpEntity" >
+
+    <id column="hurry_up_id" property="hurryUpID" jdbcType="INTEGER" />
+    <result column="send_user_id" property="sendUserID" jdbcType="INTEGER" />
+    <result column="send_user_name" property="sendUserName" jdbcType="VARCHAR" />
+    <result column="send_user_photo" property="sendUserPhoto" jdbcType="VARCHAR" />
+    <result column="receive_user_id" property="receiveUserID" jdbcType="INTEGER" />
+    <result column="receive_user_name" property="receiveUserName" jdbcType="VARCHAR" />
+    <result column="business_id" property="businessID" jdbcType="INTEGER" />
+    <result column="hurry_up_status" property="hurryUpStatus" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="edit_user" property="editUser" jdbcType="VARCHAR" />
+    <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="searchTotalCount" resultType="java.lang.Integer">
+
+  </select>
+  <select id="searchList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+
+  </select>
+  <select id="search" resultMap="BaseResultMap">
+
+  </select>
+  <select id="searchByName" resultMap="BaseResultMap">
+
+  </select>
+  <select id="searchOfReceiver" resultMap="BaseResultMap">
+    SELECT
+      A.hurry_up_id,
+      A.business_id,
+      A.send_user_id,
+      B.UserName as send_user_name,
+      B.user_photo as send_user_photo,
+      A.receive_user_id,
+      C.UserName as receive_user_name,
+      A.hurry_up_status,
+      A.create_user,
+      DATE_FORMAT(A.create_time, '%Y-%m-%d %H:%i:%s') AS create_time,
+      A.edit_user,
+      DATE_FORMAT(A.edit_time, '%Y-%m-%d %H:%i:%s') AS edit_time
+    FROM call_center.business_hurry_up A
+    INNER JOIN CBSS.`User` B
+    on A.send_user_id = B.UserID
+    INNER JOIN CBSS.`User` C
+    on A.receive_user_id = C.UserID
+    WHERE A.receive_user_id = #{receiveUserID,jdbcType=INTEGER}
+    AND A.hurry_up_status = 'S'
+    ORDER BY A.create_time DESC
+    LIMIT 1;
+  </select>
+  <insert id="insert" parameterType="com.johnny.store.entity.BankEntity" >
+    INSERT INTO call_center.business_hurry_up (
+      hurry_up_id,
+      send_user_id,
+      receive_user_id,
+      business_id,
+      create_user,
+      edit_user
+    )
+    VALUES (
+      #{hurryUpID, jdbcType=INTEGER},
+      #{sendUserID, jdbcType=INTEGER},
+      #{receiveUserID, jdbcType=INTEGER},
+      #{businessID, jdbcType=INTEGER},
+      #{createUser, jdbcType=VARCHAR},
+      #{editUser, jdbcType=VARCHAR}
+    )
+  </insert>
+  <update id="update" parameterType="com.johnny.store.entity.BankEntity" >
+    UPDATE call_center.business_hurry_up SET
+      hurry_up_status = #{hurryUpStatus,jdbcType=VARCHAR},
+      edit_user = #{editUser,jdbcType=VARCHAR}
+    WHERE receive_user_id = #{receiveUserID,jdbcType=INTEGER}
+  </update>
+  <delete id="delete" parameterType="java.lang.Integer" >
+
+  </delete>
+</mapper>

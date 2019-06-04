@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johnny.store.mapper.CallBackMappingMapper" >
+  <resultMap id="BaseResultMap" type="com.johnny.store.entity.CallBackMappingEntity" >
+    <id column="call_back_id" property="callBackID" jdbcType="INTEGER" />
+    <result column="call_back_msg" property="callBackMessage" jdbcType="NVARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="edit_user" property="editUser" jdbcType="VARCHAR" />
+    <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="searchTotalCount" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1) AS TotalCount
+    FROM call_center.call_back_mapping;
+  </select>
+  <select id="searchList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+      call_back_id,
+      call_back_msg,
+      create_user,
+      DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') AS create_time,
+      edit_user,
+      DATE_FORMAT(edit_time, '%Y-%m-%d %H:%i:%s') AS edit_time
+    FROM call_center.call_back_mapping
+    ORDER BY create_time
+    LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};
+  </select>
+
+  <select id="search" resultMap="BaseResultMap">
+
+  </select>
+
+  <select id="searchByName" resultMap="BaseResultMap">
+
+  </select>
+  <insert id="insert" parameterType="com.johnny.store.entity.BankEntity" >
+
+  </insert>
+  <update id="update" parameterType="com.johnny.store.entity.BankEntity" >
+
+  </update>
+  <delete id="delete" parameterType="java.lang.Integer" >
+
+  </delete>
+</mapper>

@@ -150,14 +150,17 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
         try {
             int startIndex = (pageNumber - 1) * pageSize;
             List<BusinessFlowVO> modelList = new ArrayList<>();
-            List<BusinessFlowEntity> entityList =  businessFlowMapper.searchList(startIndex, pageSize);
-            if(entityList == null || entityList.size() == 0){
+
+            int totalCount = businessFlowMapper.searchTotalCount();
+            if(totalCount == 0){
                 return UnifiedResponseManager.buildSuccessResponse(0, null);
             }
+
+            List<BusinessFlowEntity> entityList =  businessFlowMapper.searchList(startIndex, pageSize);
             for (BusinessFlowEntity entity : entityList) {
                 modelList.add(convertEntityToVo(entity));
             }
-            return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
+            return UnifiedResponseManager.buildSuccessResponse(totalCount, modelList);
         } catch (Exception ex) {
             LogUtils.processExceptionLog(ex);
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
@@ -226,7 +229,9 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
         businessFlowVO.setReceiveTime(entity.getReceiveTime());
         businessFlowVO.setBusinessStatus(entity.getBusinessStatus());
         businessFlowVO.setBusinessStatusText(entity.getBusinessStatusText());
-        businessFlowVO.setCallBackMessage(entity.getCallBackMessage());
+        businessFlowVO.setCallBackID(entity.getCallBackID());
+        businessFlowVO.setCallBackMsg(entity.getCallBackMsg());
+        businessFlowVO.setOtherCallBackMsg(entity.getOtherCallBackMsg());
         businessFlowVO.setCompleteTime(entity.getCompleteTime());
         businessFlowVO.setCreateUser(entity.getCreateUser());
         businessFlowVO.setCreateTime(entity.getCreateTime());
@@ -250,7 +255,11 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
         entity.setSendTime(dto.getSendTime());
         entity.setBusinessStatus(dto.getBusinessStatus());
         entity.setReceiveTime(DateUtils.getCurrentDateTime());
-        entity.setCallBackMessage(dto.getCallBackMessage());
+        if(null != dto.getCallBackID()){
+            entity.setCallBackID(dto.getCallBackID());
+        }
+
+        entity.setOtherCallBackMsg(dto.getOtherCallBackMsg());
         entity.setCompleteTime(DateUtils.getCurrentDateTime());
         entity.setCreateUser(dto.getLoginUser());
         entity.setEditUser(dto.getLoginUser());

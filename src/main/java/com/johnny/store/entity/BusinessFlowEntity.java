@@ -20,7 +20,9 @@ public class BusinessFlowEntity extends NewBaseEntity {
 
     private String businessStatus;
     private String businessStatusText;
-    private String callBackMessage;
+    private int callBackID;
+    private String callBackMsg;
+    private String otherCallBackMsg;
     private String completeTime;
 
     public int getBusinessID() {
@@ -167,11 +169,27 @@ public class BusinessFlowEntity extends NewBaseEntity {
         this.receiveUserPhoto = receiveUserPhoto;
     }
 
-    public String getCallBackMessage() {
-        return callBackMessage;
+    public String getOtherCallBackMsg() {
+        return otherCallBackMsg;
     }
 
-    public void setCallBackMessage(String callBackMessage) {
-        this.callBackMessage = callBackMessage;
+    public void setOtherCallBackMsg(String otherCallBackMsg) {
+        this.otherCallBackMsg = otherCallBackMsg;
+    }
+
+    public int getCallBackID() {
+        return callBackID;
+    }
+
+    public void setCallBackID(int callBackID) {
+        this.callBackID = callBackID;
+    }
+
+    public String getCallBackMsg() {
+        return callBackMsg;
+    }
+
+    public void setCallBackMsg(String callBackMsg) {
+        this.callBackMsg = callBackMsg;
     }
 }

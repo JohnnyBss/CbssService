@@ -20,7 +20,9 @@ public class BusinessFlowVO extends NewBaseVO {
 
     private String businessStatus;
     private String businessStatusText;
-    private String callBackMessage;
+    private Integer callBackID;
+    private String callBackMsg;
+    private String otherCallBackMsg;
     private String completeTime;
 
     public Integer getBusinessID() {
@@ -167,11 +169,27 @@ public class BusinessFlowVO extends NewBaseVO {
         this.businessStatusText = businessStatusText;
     }
 
-    public String getCallBackMessage() {
-        return callBackMessage;
+    public String getOtherCallBackMsg() {
+        return otherCallBackMsg;
     }
 
-    public void setCallBackMessage(String callBackMessage) {
-        this.callBackMessage = callBackMessage;
+    public void setOtherCallBackMsg(String otherCallBackMsg) {
+        this.otherCallBackMsg = otherCallBackMsg;
+    }
+
+    public Integer getCallBackID() {
+        return callBackID;
+    }
+
+    public void setCallBackID(Integer callBackID) {
+        this.callBackID = callBackID;
+    }
+
+    public String getCallBackMsg() {
+        return callBackMsg;
+    }
+
+    public void setCallBackMsg(String callBackMsg) {
+        this.callBackMsg = callBackMsg;
     }
 }

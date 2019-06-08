@@ -19,16 +19,25 @@
     <result column="receive_time" property="receiveTime" jdbcType="VARCHAR" />
     <result column="business_status" property="businessStatus" jdbcType="VARCHAR" />
     <result column="business_status_text" property="businessStatusText" jdbcType="VARCHAR" />
-
     <result column="call_back_id" property="callBackID" jdbcType="INTEGER" />
     <result column="call_back_msg" property="callBackMsg" jdbcType="VARCHAR" />
     <result column="other_call_back_msg" property="otherCallBackMsg" jdbcType="VARCHAR" />
-
     <result column="complete_time" property="completeTime" jdbcType="VARCHAR" />
     <result column="create_user" property="createUser" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="edit_user" property="editUser" jdbcType="VARCHAR" />
     <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="analyseProcessedMap" type="com.johnny.store.entity.AnalyseProcessedEntity" >
+    <result column="receive_user_id" property="receiveUserID" jdbcType="INTEGER" />
+    <result column="receive_user_name" property="receiveUserName" jdbcType="VARCHAR" />
+    <result column="total_count" property="totalCount" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="analyseSendMap" type="com.johnny.store.entity.AnalyseSendEntity" >
+    <result column="send_user_id" property="sendUserID" jdbcType="INTEGER" />
+    <result column="send_user_name" property="sendUserName" jdbcType="VARCHAR" />
+    <result column="send_total_count" property="sendTotalCount" jdbcType="INTEGER" />
+    <result column="callback_total_count" property="callbackTotalCount" jdbcType="INTEGER" />
   </resultMap>
 
   <select id="searchTotalCount" resultType="java.lang.Integer">
@@ -39,6 +48,55 @@
     on A.send_user_id = B.UserID
     inner join `User` C
     on A.receive_user_id = C.UserID;
+  </select>
+  <select id="analyseProcessedBusiness" resultMap="analyseProcessedMap">
+    select
+      A.receive_user_id,
+      B.UserName as receive_user_name,
+      A.total_count
+    from
+    (
+      select
+        receive_user_id,
+        COUNT(1) AS total_count
+      from call_center.business_flow
+      where business_status in ('3', '4')
+        and create_time between #{arg0,jdbcType=VARCHAR} and #{arg1,jdbcType=VARCHAR}
+      group by receive_user_id
+    ) A
+    inner join cbss.user B
+    on A.receive_user_id = B.userid
+      and B.user_role in ('2', '4')
+  </select>
+  <select id="analyseSendBusiness" resultMap="analyseSendMap">
+    select
+      A.send_user_id,
+      C.UserName as send_user_name,
+      A.send_total_count,
+      B.callback_total_count
+    from
+    (
+      select
+      send_user_id,
+      COUNT(1) AS send_total_count
+      from call_center.business_flow
+      where create_time between #{arg0,jdbcType=VARCHAR} and #{arg1,jdbcType=VARCHAR}
+      group by send_user_id
+    ) A
+    inner join
+    (
+      select
+      send_user_id,
+      COUNT(1) AS callback_total_count
+      from call_center.business_flow
+      where `call_back_id` != 0
+      and create_time between #{arg0,jdbcType=VARCHAR} and #{arg1,jdbcType=VARCHAR}
+      group by send_user_id
+    ) B
+      on A.send_user_id = B.send_user_id
+    inner join cbss.user C
+      on A.send_user_id = C.userid
+      and C.user_role = '3';
   </select>
   <select id="searchList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -357,6 +415,7 @@
   <select id="searchByName" resultMap="BaseResultMap">
 
   </select>
+
   <insert id="insert" parameterType="com.johnny.store.entity.BusinessFlowEntity" >
     INSERT INTO call_center.business_flow (
       send_user_id,

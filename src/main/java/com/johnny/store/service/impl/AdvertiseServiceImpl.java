@@ -34,47 +34,6 @@ public class AdvertiseServiceImpl implements AdvertiseService {
     @Override
     public UnifiedResponse findList(int pageNumber, int pageSize) {
         try {
-//            List<AdvertiseDetailEntity> entities = new ArrayList<>();
-//            AdvertiseDetailEntity entity1 = new AdvertiseDetailEntity();
-//            AdvertiseDetailEntity entity2 = new AdvertiseDetailEntity();
-//            AdvertiseDetailEntity entity3 = new AdvertiseDetailEntity();
-//            AdvertiseDetailEntity entity4 = new AdvertiseDetailEntity();
-//            AdvertiseDetailEntity entity5 = new AdvertiseDetailEntity();
-//            AdvertiseDetailEntity entity6 = new AdvertiseDetailEntity();
-//            AdvertiseDetailEntity entity7 = new AdvertiseDetailEntity();
-//            AdvertiseDetailEntity entity8 = new AdvertiseDetailEntity();
-//
-//            entity1.setDetailType("V");
-//            entity1.setDetailContent("http://localhost:3000/advertise/upload/高清震撼电影短片集合1.webm");
-//            entity2.setDetailType("V");
-//            entity2.setDetailContent("http://localhost:3000/advertise/upload/高清震撼电影短片集合3.webm");
-//
-//            entity3.setDetailType("I");
-//            entity3.setDetailContent("http://localhost:3000/advertise/upload/风景1.jpg");
-//            entity4.setDetailType("I");
-//            entity4.setDetailContent("http://localhost:3000/advertise/upload/风景2.jpg");
-//
-//            entity5.setDetailType("A");
-//            entity5.setDetailContent("http://localhost:3000/advertise/upload/音频文件3.mp3");
-//            entity6.setDetailType("A");
-//            entity6.setDetailContent("http://localhost:3000/advertise/upload/音频文件4.mp3");
-//
-//            entity7.setDetailType("T");
-//            entity7.setDetailContent("第一段文字内容");
-//            entity8.setDetailType("T");
-//            entity8.setDetailContent("第二段文字内容");
-//
-//            entities.add(entity1);
-//            entities.add(entity2);
-//            entities.add(entity3);
-//            entities.add(entity4);
-//            entities.add(entity5);
-//            entities.add(entity6);
-//            entities.add(entity7);
-//            entities.add(entity8);
-//
-//            String json = JsonUtils.serializeToJson(entities);
-
             int startIndex = (pageNumber - 1) * pageSize;
             List<AdvertiseVO> modelList = new ArrayList<>();
             int totalCount = advertiseModuleMapper.searchTotalCount();

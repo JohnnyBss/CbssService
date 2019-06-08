@@ -166,6 +166,32 @@
   <select id="searchByName" resultMap="BaseResultMap">
 
   </select>
+  <select id="searchByContent" resultMap="BaseResultMap">
+    SELECT
+      clock_status_id,
+      clock_user_id,
+      clock_user_status,
+      create_user,
+      DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') AS create_time,
+      edit_user,
+      DATE_FORMAT(edit_time, '%Y-%m-%d %H:%i:%s') AS edit_time
+		FROM call_center.`clock_status`
+		WHERE clock_user_id = #{arg0,jdbcType=INTEGER}
+		AND create_time BETWEEN #{arg1,jdbcType=VARCHAR} AND #{arg2,jdbcType=VARCHAR}
+		ORDER BY create_time;
+  </select>
+  <!--<select id="searchByClockId" resultMap="BaseResultMap">-->
+    <!--SELECT-->
+      <!--clock_status_id,-->
+      <!--clock_user_id,-->
+      <!--clock_user_status,-->
+      <!--create_user,-->
+      <!--DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') AS create_time,-->
+      <!--edit_user,-->
+      <!--DATE_FORMAT(edit_time, '%Y-%m-%d %H:%i:%s') AS edit_time-->
+		<!--FROM call_center.`clock_status`-->
+		<!--WHERE clock_status_id = #{arg0,jdbcType=INTEGER};-->
+  <!--</select>-->
   <insert id="insert" parameterType="com.johnny.store.entity.ClockStatusEntity" >
     INSERT INTO call_center.clock_status (
       clock_user_id,

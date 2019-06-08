@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johnny.store.mapper.CallBackStatisticMapper" >
+  <resultMap id="CallBackStatisticResultMap" type="com.johnny.store.entity.CallBackStatisticEntity" >
+    <id column="call_back_id" property="callbackID" jdbcType="INTEGER" />
+    <result column="call_back_msg" property="callbackMessage" jdbcType="NVARCHAR" />
+    <result column="total_count" property="totalCount" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="searchSendCallBack" resultMap="CallBackStatisticResultMap">
+    select
+      A.call_back_id,
+      B.call_back_msg,
+      A.total_count
+    from
+      (
+          select
+          call_back_id,
+          count(1) total_count
+          from call_center.business_flow
+          where receive_user_id = #{arg0,jdbcType=INTEGER}
+          and create_time between #{arg1,jdbcType=VARCHAR} and #{arg2,jdbcType=VARCHAR}
+          group by call_back_id
+          order by call_back_id
+      ) A
+    inner join call_center.call_back_mapping B
+    on A.call_back_id = B.call_back_id;
+  </select>
+  <select id="searchProcessedCallBack" resultMap="CallBackStatisticResultMap">
+    select
+      A.call_back_id,
+      B.call_back_msg,
+      A.total_count
+    from
+      (
+          select
+          call_back_id,
+          count(1) total_count
+          from call_center.business_flow
+          where send_user_id = #{arg0,jdbcType=INTEGER}
+          and create_time between #{arg1,jdbcType=VARCHAR} and #{arg2,jdbcType=VARCHAR}
+          group by call_back_id
+          order by call_back_id
+      ) A
+    inner join call_center.call_back_mapping B
+    on A.call_back_id = B.call_back_id;
+  </select>
+</mapper>

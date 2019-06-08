@@ -1,4 +1,6 @@
 package com.johnny.store.mapper;
+import com.johnny.store.entity.AnalyseProcessedEntity;
+import com.johnny.store.entity.AnalyseSendEntity;
 import com.johnny.store.entity.BusinessFlowEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -39,6 +41,22 @@ public interface BusinessFlowMapper extends BaseMapper<BusinessFlowEntity> {
      * @return 指定日期范围所有的业务流数据
      */
     List<BusinessFlowEntity> search4SendUser(String fromDate, String toDate);
+
+    /**
+     * 查询理财经理处理过程业务总数
+     * @param fromDate 业务日期起始时间
+     * @param toDate 业务日期结束时间
+     * @return 各位理财经理业务总数
+     */
+    List<AnalyseProcessedEntity> analyseProcessedBusiness(String fromDate, String toDate);
+
+    /**
+     * 取得制定日期范围内大堂经理处理的业务统计数量
+     * @param fromDate 业务日期起始时间
+     * @param toDate 业务日期结束时间
+     * @return 指定日期范围所有的业务流数据
+     */
+    List<AnalyseSendEntity> analyseSendBusiness(String fromDate, String toDate);
 
     /**
      * 更新业务流状态

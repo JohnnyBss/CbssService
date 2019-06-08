@@ -12,6 +12,4 @@ public interface ClockStatusMapper extends BaseMapper<ClockStatusEntity> {
     ClockStatusEntity searchFinancialCurrentClock(int userID);
 
     List<ClockStatusEntity> searchByContent(int userID, String fromDate, String toDate);
-
-//    ClockStatusEntity searchByClockId(int clockID);
 }

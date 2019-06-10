@@ -1,6 +1,5 @@
 package com.johnny.store.service.impl;
 
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.ItemDTO;
 import com.johnny.store.entity.*;
@@ -10,6 +9,8 @@ import com.johnny.store.mapper.*;
 import com.johnny.store.service.ItemService;
 import com.johnny.store.vo.ItemVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private DetailMapper detailMapper;
 
+    private Logger logger = LogManager.getLogger(ItemServiceImpl.class);
+
     @Override
     public UnifiedResponse findListItems(int bankID, int branchID) {
         try {
@@ -39,7 +42,7 @@ public class ItemServiceImpl implements ItemService {
             }
             return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -54,7 +57,7 @@ public class ItemServiceImpl implements ItemService {
             ItemVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(1, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -69,7 +72,7 @@ public class ItemServiceImpl implements ItemService {
             }
             return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -90,7 +93,7 @@ public class ItemServiceImpl implements ItemService {
             ItemEntity entity =  itemMapper.searchByName(name);
             return UnifiedResponseManager.buildSuccessResponse(entity != null);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -111,7 +114,7 @@ public class ItemServiceImpl implements ItemService {
 
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -125,7 +128,7 @@ public class ItemServiceImpl implements ItemService {
             int affectRow = affectDeleteRow + affectAddRow;
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -139,7 +142,7 @@ public class ItemServiceImpl implements ItemService {
             int affectRow = itemMapper.update(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -158,7 +161,7 @@ public class ItemServiceImpl implements ItemService {
             }
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -170,7 +173,7 @@ public class ItemServiceImpl implements ItemService {
             int affectRow = itemMapper.moveItem(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

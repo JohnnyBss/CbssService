@@ -1,6 +1,5 @@
 package com.johnny.store.service.impl;
 
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.ModuleDTO;
 import com.johnny.store.entity.ModuleEntity;
@@ -10,6 +9,8 @@ import com.johnny.store.mapper.ModuleMapper;
 import com.johnny.store.service.ModuleService;
 import com.johnny.store.vo.ModuleVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import java.util.List;
 public class ModuleServiceImpl implements ModuleService {
     @Autowired
     private ModuleMapper dataMapper;
+
+    private Logger logger = LogManager.getLogger(ModuleServiceImpl.class);
 
     @Override
     public UnifiedResponse findList(int pageNumber, int pageSize) {
@@ -35,7 +38,7 @@ public class ModuleServiceImpl implements ModuleService {
             }
             return UnifiedResponseManager.buildSuccessResponse(totalCount, modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -47,7 +50,7 @@ public class ModuleServiceImpl implements ModuleService {
             ModuleVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -58,7 +61,7 @@ public class ModuleServiceImpl implements ModuleService {
             ModuleEntity entity =  dataMapper.searchByName(name);
             return UnifiedResponseManager.buildSuccessResponse(entity != null);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -70,7 +73,7 @@ public class ModuleServiceImpl implements ModuleService {
             int affectRow = dataMapper.insert(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -82,7 +85,7 @@ public class ModuleServiceImpl implements ModuleService {
             int affectRow = dataMapper.update(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -93,7 +96,7 @@ public class ModuleServiceImpl implements ModuleService {
             int affectRow = dataMapper.delete(id);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

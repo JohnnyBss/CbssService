@@ -1,6 +1,5 @@
 package com.johnny.store.service.impl;
 
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.UserDTO;
 import com.johnny.store.entity.UserEntity;
@@ -10,6 +9,8 @@ import com.johnny.store.mapper.UserMapper;
 import com.johnny.store.service.UserService;
 import com.johnny.store.vo.UnifiedResponse;
 import com.johnny.store.vo.UserVO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    private Logger logger = LogManager.getLogger(UserServiceImpl.class);
+
     @Override
     public UnifiedResponse findByCellphone(String cellphone) {
         try {
@@ -28,7 +31,7 @@ public class UserServiceImpl implements UserService {
             UserVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -40,7 +43,7 @@ public class UserServiceImpl implements UserService {
             UserVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -52,7 +55,7 @@ public class UserServiceImpl implements UserService {
             int affectRow = userMapper.changePassword(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -72,7 +75,7 @@ public class UserServiceImpl implements UserService {
             }
             return UnifiedResponseManager.buildSuccessResponse(totalCount, modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -82,10 +85,12 @@ public class UserServiceImpl implements UserService {
         try {
             UserEntity entity =  userMapper.search(id);
             UserVO model = convertEntityToVo(entity);
-            model.setPassword(entity.getPassword());
+            if(model != null){
+                model.setPassword(entity.getPassword());
+            }
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -102,7 +107,7 @@ public class UserServiceImpl implements UserService {
             int affectRow = userMapper.insert(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -114,7 +119,7 @@ public class UserServiceImpl implements UserService {
             int affectRow = userMapper.update(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -125,7 +130,7 @@ public class UserServiceImpl implements UserService {
             int affectRow = userMapper.delete(id);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

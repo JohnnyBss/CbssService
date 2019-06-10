@@ -1,6 +1,5 @@
 package com.johnny.store.service.impl;
 
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.DetailDTO;
 import com.johnny.store.entity.*;
@@ -10,6 +9,8 @@ import com.johnny.store.mapper.*;
 import com.johnny.store.service.DetailService;
 import com.johnny.store.vo.DetailVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,8 @@ public class DetailServiceImpl implements DetailService {
     @Autowired
     private DetailMapper detailMapper;
 
+    private Logger logger = LogManager.getLogger(DetailServiceImpl.class);
+
     @Override
     public UnifiedResponse findList4Item(int bankID, int branchID, int itemID) {
         try {
@@ -43,7 +46,7 @@ public class DetailServiceImpl implements DetailService {
             }
             return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -61,7 +64,7 @@ public class DetailServiceImpl implements DetailService {
             }
             return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -72,7 +75,7 @@ public class DetailServiceImpl implements DetailService {
             int affectRow = detailMapper.deleteAll(bankID, branchID, itemID);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -83,7 +86,7 @@ public class DetailServiceImpl implements DetailService {
             int affectRow = detailMapper.deleteImage(bankID, branchID, itemID, detailID);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -95,7 +98,7 @@ public class DetailServiceImpl implements DetailService {
             DetailVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -115,7 +118,7 @@ public class DetailServiceImpl implements DetailService {
             }
             return UnifiedResponseManager.buildSuccessResponse(totalCount, modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -127,7 +130,7 @@ public class DetailServiceImpl implements DetailService {
             DetailVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -138,7 +141,7 @@ public class DetailServiceImpl implements DetailService {
             DetailEntity entity =  detailMapper.searchByName(name);
             return UnifiedResponseManager.buildSuccessResponse(entity != null);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -147,15 +150,10 @@ public class DetailServiceImpl implements DetailService {
     public UnifiedResponse add(DetailDTO dto) {
         try {
             DetailEntity entity = convertDtoToEntity(dto);
-            /*
-            if(dto.getContentType().equals("T")){
-                int deleteRow = detailMapper.deleteImageMemo(entity.getBankID(), entity.getBranchID(), entity.getItemID(), entity.getTextMapDetail());
-            }
-            */
             int affectRow = detailMapper.insert(entity);
             return UnifiedResponseManager.buildSuccessResponseWithID(affectRow, entity.getDetailID());
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

@@ -1,6 +1,5 @@
 package com.johnny.store.service.impl;
 
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.ClockStatusDTO;
 import com.johnny.store.entity.ClockStatusEntity;
@@ -11,6 +10,8 @@ import com.johnny.store.mapper.UserMapper;
 import com.johnny.store.service.ClockStatusService;
 import com.johnny.store.vo.ClockStatusVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,8 @@ public class ClockStatusServiceImpl implements ClockStatusService {
     @Autowired
     private ClockStatusMapper clockStatusMapper;
 
+    private Logger logger = LogManager.getLogger(ClockStatusServiceImpl.class);
+
     @Override
     public UnifiedResponse findList(int pageNumber, int pageSize) {
         try {
@@ -43,7 +46,7 @@ public class ClockStatusServiceImpl implements ClockStatusService {
             }
             return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -88,7 +91,7 @@ public class ClockStatusServiceImpl implements ClockStatusService {
             }
             return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -100,7 +103,7 @@ public class ClockStatusServiceImpl implements ClockStatusService {
             ClockStatusVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -117,7 +120,7 @@ public class ClockStatusServiceImpl implements ClockStatusService {
             int affectRow = clockStatusMapper.insert(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -133,7 +136,7 @@ public class ClockStatusServiceImpl implements ClockStatusService {
             int affectRow = clockStatusMapper.delete(clockStatusID);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

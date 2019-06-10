@@ -1,7 +1,6 @@
 package com.johnny.store.service.impl;
 
 import com.johnny.store.common.DateUtils;
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.BusinessFlowDTO;
 import com.johnny.store.entity.BusinessFlowEntity;
@@ -10,6 +9,8 @@ import com.johnny.store.mapper.BusinessFlowMapper;
 import com.johnny.store.service.BusinessFlowService;
 import com.johnny.store.vo.BusinessFlowVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.List;
 public class BusinessFlowServiceImpl implements BusinessFlowService {
     @Autowired
     private BusinessFlowMapper businessFlowMapper;
+    private Logger logger = LogManager.getLogger(BusinessFlowServiceImpl.class);
 
     @Override
     public UnifiedResponse findLatestBusiness(int userID) {
@@ -40,7 +42,7 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
             }
             return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -61,7 +63,7 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
             }
             return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -79,7 +81,7 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
 
             return UnifiedResponseManager.buildSuccessResponse(1, true);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -100,7 +102,7 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
             }
             return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -114,7 +116,7 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
             int affectRow = businessFlowMapper.updateStatus(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -126,7 +128,7 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
             int affectRow = businessFlowMapper.updateCallBack(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -140,7 +142,7 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
             int affectRow = businessFlowMapper.updateToComplete(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -162,7 +164,7 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
             }
             return UnifiedResponseManager.buildSuccessResponse(totalCount, modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -174,7 +176,7 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
             BusinessFlowVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -194,7 +196,7 @@ public class BusinessFlowServiceImpl implements BusinessFlowService {
             int affectRow = businessFlowMapper.insert(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

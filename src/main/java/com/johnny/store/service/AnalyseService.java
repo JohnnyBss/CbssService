@@ -25,14 +25,4 @@ public interface AnalyseService {
      * @return 分析结果
      */
     UnifiedResponse analyseLobbyBusiness(String fromDate, String toDate);
-
-    /**
-     * 取得某个用户某个状态的持续时间
-     * @param userID 用户编号
-     * @param clockStatus 特定状态
-     * @param fromDate 开始时间
-     * @param toDate 截止时间
-     * @return 持续时间
-     */
-    DataDifference getClockStatusTime(int userID, String clockStatus, String fromDate, String toDate) throws ParseException;
 }

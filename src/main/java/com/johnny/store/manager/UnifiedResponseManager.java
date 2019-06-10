@@ -1,16 +1,19 @@
 package com.johnny.store.manager;
 
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.config.ResponseSetting;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.enums.ResponseOptionEnum;
 import com.johnny.store.enums.ResponseTypeEnum;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 统一返回对象
  */
 public class UnifiedResponseManager {
+    private static Logger logger = LogManager.getLogger(UnifiedResponseManager.class);
+
     public static <T> UnifiedResponse buildSuccessResponse(T data){
         try{
             UnifiedResponse<T> unifiedResponse = new UnifiedResponse<>();
@@ -25,7 +28,7 @@ public class UnifiedResponseManager {
 
             return unifiedResponse;
         }catch (Exception ex){
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return buildErrorResponse(ResponseCodeConsts.BuildResponseException);
         }
     }
@@ -44,7 +47,7 @@ public class UnifiedResponseManager {
 
             return unifiedResponse;
         }catch (Exception ex){
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return buildErrorResponse(ResponseCodeConsts.BuildResponseException);
         }
     }
@@ -62,7 +65,7 @@ public class UnifiedResponseManager {
             unifiedResponse.setResponseData(data);
             return unifiedResponse;
         }catch (Exception ex){
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return buildErrorResponse(ResponseCodeConsts.BuildResponseException);
         }
     }
@@ -79,7 +82,7 @@ public class UnifiedResponseManager {
             unifiedResponse.setAffectCount(affectCount);
             return unifiedResponse;
         }catch (Exception ex){
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return buildErrorResponse(ResponseCodeConsts.BuildResponseException);
         }
     }
@@ -97,7 +100,7 @@ public class UnifiedResponseManager {
             unifiedResponse.setResponseData(data);
             return unifiedResponse;
         }catch (Exception ex){
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return buildErrorResponse(ResponseCodeConsts.BuildResponseException);
         }
     }
@@ -114,7 +117,7 @@ public class UnifiedResponseManager {
             unifiedResponse.setResponseData(null);
             return unifiedResponse;
         }catch (Exception ex){
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return buildErrorResponse(ResponseCodeConsts.BuildResponseException);
         }
     }

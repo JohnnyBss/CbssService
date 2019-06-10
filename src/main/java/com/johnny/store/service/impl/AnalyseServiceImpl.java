@@ -2,7 +2,6 @@ package com.johnny.store.service.impl;
 
 import com.johnny.store.common.DataDifference;
 import com.johnny.store.common.DateUtils;
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.entity.AnalyseProcessedEntity;
 import com.johnny.store.entity.AnalyseSendEntity;
@@ -17,6 +16,8 @@ import com.johnny.store.vo.Analyse4FinancialVO;
 import com.johnny.store.vo.Analyse4LobbyVO;
 import com.johnny.store.vo.AnalyseCallBack4FinancialVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,8 @@ public class AnalyseServiceImpl implements AnalyseService {
     private CallBackStatisticMapper callBackStatisticMapper;
     @Autowired
     private BusinessFlowMapper businessFlowMapper;
+
+    private Logger logger = LogManager.getLogger(AnalyseServiceImpl.class);
 
     @Override
     public UnifiedResponse analyseFinancialBusiness(String fromDate, String toDate) {
@@ -64,7 +67,7 @@ public class AnalyseServiceImpl implements AnalyseService {
 
             return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -92,13 +95,13 @@ public class AnalyseServiceImpl implements AnalyseService {
             }
             return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
         }catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
 
-    @Override
-    public DataDifference getClockStatusTime(int userID, String clockStatus, String fromDate, String toDate) throws ParseException {
+
+    private DataDifference getClockStatusTime(int userID, String clockStatus, String fromDate, String toDate) throws ParseException {
         DataDifference statusTotalTime = new DataDifference();
         List<ClockStatusEntity> waitAnalyseClockEntityList = new ArrayList<>();
 
@@ -130,7 +133,6 @@ public class AnalyseServiceImpl implements AnalyseService {
                     break;
                 }
             }
-
             if(nextClockTime != null){
                 DataDifference dataDifference = DateUtils.difference(currentClockTime, nextClockTime);
                 statusTotalTime.setDay(statusTotalTime.getDay() + dataDifference.getDay());
@@ -138,9 +140,7 @@ public class AnalyseServiceImpl implements AnalyseService {
                 statusTotalTime.setMin(statusTotalTime.getMin() + dataDifference.getMin());
                 statusTotalTime.setSeconds(statusTotalTime.getSeconds() + dataDifference.getSeconds());
             }
-
         }
-
         return DateUtils.convertToStandard(statusTotalTime.getDay(), statusTotalTime.getHour(), statusTotalTime.getMin(), statusTotalTime.getSeconds());
     }
 

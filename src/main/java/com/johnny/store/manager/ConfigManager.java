@@ -16,9 +16,6 @@ public class ConfigManager {
         ResponseSetting resSetting = new ResponseSetting();
         if(responseSettingList == null){
             InputStream stream = ConfigManager.class.getClassLoader().getResourceAsStream(ConfigFileConsts.RESPONSE_SETTING_FILE);
-
-            //String configPath = ConfigManager.class.getClassLoader().getResource(ConfigFileConsts.RESPONSE_SETTING_FILE).getFile();
-            //configPath = java.net.URLDecoder.decode(configPath,"utf-8");
             responseSettingList = XmlSerializeUtils.deserializeToObject(stream);
         }
         for (ResponseSetting responseSetting : responseSettingList) {
@@ -34,7 +31,6 @@ public class ConfigManager {
     public static String getSystemSetting(String key){
         String value = "";
         try {
-            //String configPath = java.net.URLDecoder.decode(LogUtils.class.getClassLoader().getResource(ConfigFileConsts.SYSTEM_SETTING).getFile(), "utf-8");
             InputStream stream = ConfigManager.class.getClassLoader().getResourceAsStream(ConfigFileConsts.SYSTEM_SETTING);
             Map<String, String> systemSetting = XmlSerializeUtils.deserializeToObject(stream);
             value = systemSetting.get(key);

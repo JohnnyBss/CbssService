@@ -1,6 +1,5 @@
 package com.johnny.store.service.impl;
 
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.CallBackMappingDTO;
 import com.johnny.store.entity.CallBackMappingEntity;
@@ -9,6 +8,8 @@ import com.johnny.store.mapper.CallBackMappingMapper;
 import com.johnny.store.service.CallBackMappingService;
 import com.johnny.store.vo.CallBackMappingVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class CallBackMappingServiceImpl implements CallBackMappingService {
     @Autowired
     private CallBackMappingMapper myMapper;
+    private Logger logger = LogManager.getLogger(CallBackMappingServiceImpl.class);
 
     @Override
     public UnifiedResponse findList(int pageNumber, int pageSize) {
@@ -35,7 +37,7 @@ public class CallBackMappingServiceImpl implements CallBackMappingService {
             }
             return UnifiedResponseManager.buildSuccessResponse(totalCount, modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

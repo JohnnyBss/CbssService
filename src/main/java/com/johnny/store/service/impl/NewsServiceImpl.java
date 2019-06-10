@@ -1,7 +1,6 @@
 package com.johnny.store.service.impl;
 
 import com.johnny.store.common.JsonUtils;
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.NewsContentDTO;
 import com.johnny.store.dto.NewsDTO;
@@ -18,6 +17,8 @@ import com.johnny.store.mapper.NewsMapper;
 import com.johnny.store.service.NewsService;
 import com.johnny.store.vo.NewsVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,8 @@ public class NewsServiceImpl implements NewsService {
     @Autowired
     private NewsContentMapper newsContentMapper;
 
+    private Logger logger = LogManager.getLogger(NewsServiceImpl.class);
+
     @Override
     public UnifiedResponse findList4Bank(int pageNumber, int pageSize, int bankID, int branchID) {
         try {
@@ -54,7 +57,7 @@ public class NewsServiceImpl implements NewsService {
             }
             return UnifiedResponseManager.buildSuccessResponse(totalCount, modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -74,7 +77,7 @@ public class NewsServiceImpl implements NewsService {
             }
             return UnifiedResponseManager.buildSuccessResponse(totalCount, modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -86,7 +89,7 @@ public class NewsServiceImpl implements NewsService {
             NewsVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -110,7 +113,7 @@ public class NewsServiceImpl implements NewsService {
             }
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -131,7 +134,7 @@ public class NewsServiceImpl implements NewsService {
             }
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -144,7 +147,7 @@ public class NewsServiceImpl implements NewsService {
             affectRow += affect4ContentRow;
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

@@ -1,6 +1,5 @@
 package com.johnny.store.service.impl;
 
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.SystemNameDTO;
 import com.johnny.store.entity.SystemNameEntity;
@@ -10,6 +9,8 @@ import com.johnny.store.mapper.SystemNameMapper;
 import com.johnny.store.service.SystemNameService;
 import com.johnny.store.vo.SystemNameVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 public class SystemNameServiceImpl implements SystemNameService {
     @Autowired
     private SystemNameMapper systemNameMapper;
+
+    private Logger logger = LogManager.getLogger(SystemNameServiceImpl.class);
 
     @Override
     public UnifiedResponse findList(int pageNumber, int pageSize) {
@@ -30,7 +33,7 @@ public class SystemNameServiceImpl implements SystemNameService {
             SystemNameVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -52,7 +55,7 @@ public class SystemNameServiceImpl implements SystemNameService {
             int affectRow = systemNameMapper.update(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

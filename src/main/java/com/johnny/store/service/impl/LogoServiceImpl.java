@@ -1,6 +1,5 @@
 package com.johnny.store.service.impl;
 
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.LogoDTO;
 import com.johnny.store.entity.BankEntity;
@@ -14,6 +13,8 @@ import com.johnny.store.mapper.LogoMapper;
 import com.johnny.store.service.LogoService;
 import com.johnny.store.vo.LogoVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class LogoServiceImpl implements LogoService {
     @Autowired
     private LogoMapper logoMapper;
 
+    private Logger logger = LogManager.getLogger(LogoServiceImpl.class);
+
     @Override
     public UnifiedResponse findList4Branch(int bankID, int branchID) {
         try {
@@ -40,7 +43,7 @@ public class LogoServiceImpl implements LogoService {
             LogoVO logoVO = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(1, logoVO);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -60,7 +63,7 @@ public class LogoServiceImpl implements LogoService {
             }
             return UnifiedResponseManager.buildSuccessResponse(totalCount, modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -72,7 +75,7 @@ public class LogoServiceImpl implements LogoService {
             LogoVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -91,7 +94,7 @@ public class LogoServiceImpl implements LogoService {
             int affectRow = affectDeleteRow +  affectAddRow;
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -103,7 +106,7 @@ public class LogoServiceImpl implements LogoService {
             int affectRow = logoMapper.update(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -114,7 +117,7 @@ public class LogoServiceImpl implements LogoService {
             int affectRow = logoMapper.delete(id);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

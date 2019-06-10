@@ -1,6 +1,5 @@
 package com.johnny.store.service.impl;
 
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.BusinessHurryUpDTO;
 import com.johnny.store.entity.BusinessHurryUpEntity;
@@ -9,6 +8,8 @@ import com.johnny.store.mapper.BusinessHurryUpMapper;
 import com.johnny.store.service.BusinessHurryUpService;
 import com.johnny.store.vo.BusinessHurryUpVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class BusinessHurryUpServiceImpl implements BusinessHurryUpService {
     @Autowired
     private BusinessHurryUpMapper myMapper;
+    private Logger logger = LogManager.getLogger(BusinessHurryUpServiceImpl.class);
 
     @Override
     public UnifiedResponse findOfReceiver(int receiveUserID) {
@@ -28,7 +30,7 @@ public class BusinessHurryUpServiceImpl implements BusinessHurryUpService {
             model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(1, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -55,7 +57,7 @@ public class BusinessHurryUpServiceImpl implements BusinessHurryUpService {
             int affectRow = myMapper.insert(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -67,7 +69,7 @@ public class BusinessHurryUpServiceImpl implements BusinessHurryUpService {
             int affectRow = myMapper.update(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

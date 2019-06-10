@@ -1,6 +1,5 @@
 package com.johnny.store.service.impl;
 
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.BranchDTO;
 import com.johnny.store.entity.BankEntity;
@@ -12,6 +11,8 @@ import com.johnny.store.mapper.BranchMapper;
 import com.johnny.store.service.BranchService;
 import com.johnny.store.vo.BranchVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class BranchServiceImpl implements BranchService {
 
     @Autowired
     private BaseMapper<BankEntity> bankMapper;
+    private Logger logger = LogManager.getLogger(BranchServiceImpl.class);
 
     @Override
     public UnifiedResponse findList(int pageNumber, int pageSize) {
@@ -40,7 +42,7 @@ public class BranchServiceImpl implements BranchService {
             }
             return UnifiedResponseManager.buildSuccessResponse(totalCount, modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -58,7 +60,7 @@ public class BranchServiceImpl implements BranchService {
             }
             return UnifiedResponseManager.buildSuccessResponse(modelList.size(), modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -70,7 +72,7 @@ public class BranchServiceImpl implements BranchService {
             BranchVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -81,7 +83,7 @@ public class BranchServiceImpl implements BranchService {
             BranchEntity entity =  baseMapper.searchByName(name);
             return UnifiedResponseManager.buildSuccessResponse(entity != null);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -93,7 +95,7 @@ public class BranchServiceImpl implements BranchService {
             int affectRow = baseMapper.insert(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -105,7 +107,7 @@ public class BranchServiceImpl implements BranchService {
             int affectRow = baseMapper.update(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -116,7 +118,7 @@ public class BranchServiceImpl implements BranchService {
             int affectRow = baseMapper.delete(id);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

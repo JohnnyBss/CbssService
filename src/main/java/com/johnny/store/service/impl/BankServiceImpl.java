@@ -1,10 +1,7 @@
 package com.johnny.store.service.impl;
 
-import com.johnny.store.common.JsonUtils;
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.BankDTO;
-import com.johnny.store.dto.NewsContentDTO;
 import com.johnny.store.entity.BankEntity;
 import com.johnny.store.manager.ConvertManager;
 import com.johnny.store.manager.UnifiedResponseManager;
@@ -12,6 +9,8 @@ import com.johnny.store.mapper.BaseMapper;
 import com.johnny.store.service.BankService;
 import com.johnny.store.vo.BankVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ import java.util.List;
 public class BankServiceImpl implements BankService {
     @Autowired
     private BaseMapper<BankEntity> baseMapper;
+    private Logger logger = LogManager.getLogger(BankServiceImpl.class);
 
     @Override
     public UnifiedResponse findList(int pageNumber, int pageSize) {
@@ -37,7 +37,7 @@ public class BankServiceImpl implements BankService {
             }
             return UnifiedResponseManager.buildSuccessResponse(totalCount, modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -49,7 +49,7 @@ public class BankServiceImpl implements BankService {
             BankVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -60,7 +60,7 @@ public class BankServiceImpl implements BankService {
             BankEntity entity =  baseMapper.searchByName(name);
             return UnifiedResponseManager.buildSuccessResponse(entity != null);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -72,7 +72,7 @@ public class BankServiceImpl implements BankService {
             int affectRow = baseMapper.insert(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -84,7 +84,7 @@ public class BankServiceImpl implements BankService {
             int affectRow = baseMapper.update(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -95,7 +95,7 @@ public class BankServiceImpl implements BankService {
             int affectRow = baseMapper.delete(id);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

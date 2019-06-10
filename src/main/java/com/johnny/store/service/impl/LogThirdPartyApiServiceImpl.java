@@ -1,6 +1,5 @@
 package com.johnny.store.service.impl;
 
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.LogThirdPartyApiDTO;
 import com.johnny.store.entity.LogThirdPartyApiEntity;
@@ -9,6 +8,8 @@ import com.johnny.store.mapper.LogThirdPartyApiMapper;
 import com.johnny.store.service.LogThirdPartyApiService;
 import com.johnny.store.vo.LogThirdPartyApiVO;
 import com.johnny.store.vo.UnifiedResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 public class LogThirdPartyApiServiceImpl implements LogThirdPartyApiService {
     @Autowired
     private LogThirdPartyApiMapper myMapper;
+
+    private Logger logger = LogManager.getLogger(LogThirdPartyApiServiceImpl.class);
 
     @Override
     public UnifiedResponse findList(int pageNumber, int pageSize) {
@@ -39,7 +42,7 @@ public class LogThirdPartyApiServiceImpl implements LogThirdPartyApiService {
             int affectRow = myMapper.insert(entity);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

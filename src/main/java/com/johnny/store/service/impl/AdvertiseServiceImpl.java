@@ -1,7 +1,6 @@
 package com.johnny.store.service.impl;
 
 import com.johnny.store.common.JsonUtils;
-import com.johnny.store.common.LogUtils;
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.AdvertiseDTO;
 import com.johnny.store.entity.AdvertiseModuleEntity;
@@ -15,6 +14,9 @@ import com.johnny.store.vo.AdvertiseVO;
 import com.johnny.store.vo.UnifiedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,8 @@ public class AdvertiseServiceImpl implements AdvertiseService {
 
     @Autowired
     private AdvertiseDetailMapper advertiseDetailMapper;
+
+    private Logger logger = LogManager.getLogger(AdvertiseServiceImpl.class);
 
     @Override
     public UnifiedResponse findList(int pageNumber, int pageSize) {
@@ -53,7 +57,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
             }
             return UnifiedResponseManager.buildSuccessResponse(totalCount, modelList);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -141,7 +145,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
             advertiseVO.setEditTime(moduleEntity.getEditTime());
             return UnifiedResponseManager.buildSuccessResponse(advertiseVO);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -165,7 +169,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
             }
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -191,7 +195,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
             }
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }
@@ -203,7 +207,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
             affectRow += advertiseDetailMapper.delete(moduleID);
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
-            LogUtils.processExceptionLog(ex);
+            logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
         }
     }

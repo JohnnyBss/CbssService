@@ -21,7 +21,7 @@
       create_user,
       DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') AS create_time,
       edit_user,
-      DATE_FORMAT(edit_time, '%Y-%m-%d %H:%i:%s') AS edit_time,
+      DATE_FORMAT(edit_time, '%Y-%m-%d %H:%i:%s') AS edit_time
     FROM advertise.advertise_module
     ORDER BY create_time DESC
     LIMIT #{arg0,jdbcType=INTEGER}, #{arg1,jdbcType=INTEGER};

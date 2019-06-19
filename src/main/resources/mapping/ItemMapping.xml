@@ -109,7 +109,7 @@
       AND ItemType = 'D'
   </select>
 
-  <select id="searchTotalCount" resultType="java.lang.Integer">
+  <select id="searchChildItemMaxOrder" resultType="java.lang.Integer">
     SELECT
     MAX(item_order) AS MaxItemOrder
     FROM `Item`

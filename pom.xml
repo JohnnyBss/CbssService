@@ -5,7 +5,7 @@
 
 	<groupId>com.johnny</groupId>
 	<artifactId>CbssService</artifactId>
-	<version>2.1.6</version>
+	<version>2.1.6.1</version>
 	<packaging>jar</packaging>
 
 	<name>cbss-service</name>

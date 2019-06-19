@@ -7,6 +7,7 @@
     <result column="BankID" property="bankID" jdbcType="INTEGER" />
     <result column="BranchID" property="branchID" jdbcType="INTEGER" />
     <result column="ParentItemID" property="parentItemID" jdbcType="INTEGER" />
+    <result column="item_order" property="itemOrder" jdbcType="INTEGER" />
     <result column="ItemType" property="itemType" jdbcType="VARCHAR" />
     <result column="InUser" property="inUser" jdbcType="VARCHAR" />
     <result column="InDate" property="inDate" jdbcType="TIMESTAMP" />
@@ -21,6 +22,7 @@
       BankID,
       BranchID,
       ParentItemID,
+      item_order,
       ItemType,
       InUser,
       DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
@@ -37,6 +39,7 @@
       BranchID,
       ParentItemID,
       ItemType,
+      item_order,
       InUser,
       DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
       LastEditUser,
@@ -44,7 +47,7 @@
     FROM `Item`
     WHERE BankID = #{arg0,jdbcType=INTEGER}
       AND BranchID = #{arg1,jdbcType=INTEGER}
-    ORDER BY ItemID;
+    ORDER BY ParentItemID, item_order;
   </select>
   <select id="searchOfBranch" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT
@@ -54,6 +57,7 @@
       BranchID,
       ParentItemID,
       ItemType,
+      item_order,
       InUser,
       DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
       LastEditUser,
@@ -72,6 +76,7 @@
       BranchID,
       ParentItemID,
       ItemType,
+      item_order,
       InUser,
       DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
       LastEditUser,
@@ -80,7 +85,7 @@
     WHERE BankID = #{arg0,jdbcType=INTEGER}
       AND BranchID = #{arg1,jdbcType=INTEGER}
       AND ParentItemID = #{arg2,jdbcType=INTEGER}
-    ORDER BY ItemID;
+    ORDER BY ParentItemID, item_order;
   </select>
 
   <select id="searchDetail4Branch" resultMap="BaseResultMap">
@@ -91,6 +96,7 @@
       BranchID,
       ParentItemID,
       ItemType,
+      item_order,
       InUser,
       DATE_FORMAT(InDate, '%Y-%m-%d %H:%i:%s') AS InDate,
       LastEditUser,
@@ -103,6 +109,16 @@
       AND ItemType = 'D'
   </select>
 
+  <select id="searchTotalCount" resultType="java.lang.Integer">
+    SELECT
+    MAX(item_order) AS MaxItemOrder
+    FROM `Item`
+    WHERE BankID = #{arg0,jdbcType=INTEGER}
+    AND BranchID = #{arg1,jdbcType=INTEGER}
+    AND ParentItemID = #{arg2,jdbcType=INTEGER};
+  </select>
+
+
   <insert id="insert" parameterType="com.johnny.store.entity.ItemEntity" >
     INSERT INTO `Item` (
       ItemName,
@@ -110,6 +126,7 @@
       BranchID,
       ParentItemID,
       ItemType,
+      item_order,
       InUser,
       LastEditUser
     )
@@ -119,6 +136,7 @@
       #{branchID, jdbcType=INTEGER},
       #{parentItemID, jdbcType=INTEGER},
       #{itemType, jdbcType=VARCHAR},
+      #{itemOrder, jdbcType=INTEGER},
       #{inUser, jdbcType=VARCHAR},
       #{lastEditUser, jdbcType=VARCHAR}
     )
@@ -135,6 +153,17 @@
       LastEditUser = #{lastEditUser,jdbcType=VARCHAR}
     WHERE ItemID = #{itemID,jdbcType=INTEGER}
   </update>
+
+  <update id="updateItemOrder" parameterType="com.johnny.store.entity.ItemEntity" >
+    UPDATE `Item` SET
+      item_order = #{itemOrder,jdbcType=INTEGER},
+      LastEditUser = #{lastEditUser,jdbcType=VARCHAR}
+    WHERE BankID = #{bankID,jdbcType=INTEGER}
+      AND BranchID = #{branchID,jdbcType=INTEGER}
+      AND ParentItemID = #{parentItemID,jdbcType=INTEGER}
+      AND ItemID = #{itemID,jdbcType=INTEGER};
+  </update>
+
   <delete id="delete" parameterType="java.lang.Integer" >
     DELETE FROM `Item`
     WHERE ItemID = #{id,jdbcType=INTEGER}

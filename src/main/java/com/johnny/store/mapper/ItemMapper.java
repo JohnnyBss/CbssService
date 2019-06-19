@@ -19,4 +19,8 @@ public interface ItemMapper extends BaseMapper<ItemEntity> {
     int deleteDetailOfItem(int bankID, int branchID, int parentItemID, String itemName);
 
     int moveItem(ItemEntity itemEntity);
+
+    int searchChildItemMaxOrder(int bankID, int branchID, int parentItemID);
+
+    int updateItemOrder(ItemEntity itemEntity);
 }

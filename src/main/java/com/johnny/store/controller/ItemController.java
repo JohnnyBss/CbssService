@@ -1,6 +1,7 @@
 package com.johnny.store.controller;
 
 import com.johnny.store.dto.ItemDTO;
+import com.johnny.store.dto.ItemOrderDTO;
 import com.johnny.store.service.ItemService;
 import com.johnny.store.vo.UnifiedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +11,6 @@ import org.springframework.web.bind.annotation.*;
 public class ItemController {
     @Autowired
     private ItemService serviceImpl;
-
-//    @RequestMapping(value = "/api/item/{pageNumber}/{pageSize}", method = RequestMethod.GET)
-//    public UnifiedResponse get(@PathVariable("pageNumber") int pageNumber, @PathVariable("pageSize") int pageSize){
-//        return serviceImpl.findList(pageNumber, pageSize);
-//    }
-//
-//    @RequestMapping(value = "/api/item/{id}", method = RequestMethod.GET)
-//    public UnifiedResponse get(@PathVariable("id") int id){
-//        return serviceImpl.find(id);
-//    }
 
     @RequestMapping(value = "/api/item/{bankID}/{branchID}", method = RequestMethod.GET)
     public UnifiedResponse get(@PathVariable("bankID") int bankID, @PathVariable("branchID") int branchID){
@@ -58,6 +49,11 @@ public class ItemController {
     @RequestMapping(value="/api/item", method = RequestMethod.PUT)
     public UnifiedResponse put(@RequestBody ItemDTO dto){
         return serviceImpl.change(dto);
+    }
+
+    @RequestMapping(value="/api/item/changeNodeOrder", method = RequestMethod.PUT)
+    public UnifiedResponse changeItemOrder(@RequestBody ItemOrderDTO dto){
+        return serviceImpl.changeItemOrder(dto);
     }
 
     @RequestMapping(value="/api/item/move", method = RequestMethod.PUT)

@@ -8,6 +8,7 @@ public class ItemVO extends BaseVO {
     private int branchID;
     private BranchVO branchVO;
     private int parentItemID;
+    private int itemOrder;
     private String itemType;
 
     public int getItemID() {
@@ -72,5 +73,13 @@ public class ItemVO extends BaseVO {
 
     public void setItemType(String itemType) {
         this.itemType = itemType;
+    }
+
+    public int getItemOrder() {
+        return itemOrder;
+    }
+
+    public void setItemOrder(int itemOrder) {
+        this.itemOrder = itemOrder;
     }
 }

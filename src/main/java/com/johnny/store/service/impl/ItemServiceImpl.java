@@ -2,6 +2,7 @@ package com.johnny.store.service.impl;
 
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.ItemDTO;
+import com.johnny.store.dto.ItemOrderDTO;
 import com.johnny.store.entity.*;
 import com.johnny.store.manager.ConvertManager;
 import com.johnny.store.manager.UnifiedResponseManager;
@@ -103,6 +104,8 @@ public class ItemServiceImpl implements ItemService {
         try {
             int affectRow = 0;
             ItemEntity entity = convertDtoToEntity(dto);
+            int maxItemOrder = itemMapper.searchChildItemMaxOrder(entity.getBankID(), entity.getBranchID(), entity.getParentItemID());
+            entity.setItemOrder(maxItemOrder + 1);
             if(dto.getItemType().equals("D")){
                 ItemEntity detailItem =  itemMapper.searchDetail4Branch(dto.getBankID(), dto.getBranchID(), dto.getParentItemID(), dto.getItemName());
                 if(detailItem == null){
@@ -111,7 +114,6 @@ public class ItemServiceImpl implements ItemService {
             }else{
                 affectRow = itemMapper.insert(entity);
             }
-
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
             logger.error(ex.toString());
@@ -171,6 +173,30 @@ public class ItemServiceImpl implements ItemService {
         try {
             ItemEntity entity = convertDtoToEntity(dto);
             int affectRow = itemMapper.moveItem(entity);
+            return UnifiedResponseManager.buildSuccessResponse(affectRow);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+            return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
+        }
+    }
+
+    @Override
+    public UnifiedResponse changeItemOrder(ItemOrderDTO dto) {
+        try {
+            String[] itemsOrder = dto.getItemsOrder().split(",");
+            int itemOrder = 1;
+            int affectRow = 0;
+            for (String itemID : itemsOrder) {
+                ItemEntity entity = new ItemEntity();
+                entity.setBankID(dto.getBankID());
+                entity.setBranchID(dto.getBranchID());
+                entity.setParentItemID(dto.getParentItemID());
+                entity.setItemID(Integer.parseInt(itemID));
+                entity.setItemOrder(itemOrder);
+                entity.setLastEditUser(dto.getLoginUser());
+                affectRow += itemMapper.updateItemOrder(entity);
+                itemOrder++;
+            }
             return UnifiedResponseManager.buildSuccessResponse(affectRow);
         } catch (Exception ex) {
             logger.error(ex.toString());

@@ -6,6 +6,7 @@ public class ItemDTO extends BaseDTO {
     private int bankID;
     private int branchID;
     private int parentItemID;
+    private int itemOrder;
     private String itemType;
 
     public int getItemID() {
@@ -54,5 +55,13 @@ public class ItemDTO extends BaseDTO {
 
     public void setItemType(String itemType) {
         this.itemType = itemType;
+    }
+
+    public int getItemOrder() {
+        return itemOrder;
+    }
+
+    public void setItemOrder(int itemOrder) {
+        this.itemOrder = itemOrder;
     }
 }

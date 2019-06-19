@@ -1,6 +1,7 @@
 package com.johnny.store.service;
 
 import com.johnny.store.dto.ItemDTO;
+import com.johnny.store.dto.ItemOrderDTO;
 import com.johnny.store.entity.ItemEntity;
 import com.johnny.store.vo.ItemVO;
 import com.johnny.store.vo.UnifiedResponse;
@@ -28,4 +29,6 @@ public interface ItemService extends BaseService<ItemDTO, ItemVO, ItemEntity> {
     UnifiedResponse delete(int bankID, int branchID, int itemID, String itemType);
 
     UnifiedResponse move(ItemDTO dto);
+
+    UnifiedResponse changeItemOrder(ItemOrderDTO dto);
 }

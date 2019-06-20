@@ -111,7 +111,7 @@
 
   <select id="searchChildItemMaxOrder" resultType="java.lang.Integer">
     SELECT
-    MAX(item_order) AS MaxItemOrder
+    COALESCE(MAX(item_order),1) AS MaxItemOrder
     FROM `Item`
     WHERE BankID = #{arg0,jdbcType=INTEGER}
     AND BranchID = #{arg1,jdbcType=INTEGER}

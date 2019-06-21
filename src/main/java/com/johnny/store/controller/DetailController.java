@@ -2,6 +2,7 @@ package com.johnny.store.controller;
 
 import com.johnny.store.dto.DetailDTO;
 import com.johnny.store.dto.ItemDTO;
+import com.johnny.store.dto.ReverseSequenceDTO;
 import com.johnny.store.service.DetailService;
 import com.johnny.store.vo.UnifiedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,11 @@ public class DetailController {
     @RequestMapping(value="/api/detail", method = RequestMethod.POST)
     public UnifiedResponse post(@RequestBody DetailDTO dto){
         return serviceImpl.add(dto);
+    }
+
+    @RequestMapping(value="/api/detail/reverseSequence", method = RequestMethod.PUT)
+    public UnifiedResponse reverseSequence(@RequestBody ReverseSequenceDTO dto){
+        return serviceImpl.reverseSequence(dto);
     }
 
     @RequestMapping(value="/api/detail/deleteOfItem/{bankID}/{branchID}/{itemID}", method = RequestMethod.DELETE)

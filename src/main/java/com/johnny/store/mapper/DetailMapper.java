@@ -18,4 +18,6 @@ public interface DetailMapper extends BaseMapper<DetailEntity>{
     int deleteImage(int bankID, int branchID, int itemID, int detailID);
 
     DetailEntity searchImageMemo(int bankID, int branchID, int itemID, int textMapDetail);
+
+    int updateSequence(DetailEntity entity);
 }

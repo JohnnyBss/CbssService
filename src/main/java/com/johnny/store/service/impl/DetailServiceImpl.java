@@ -2,6 +2,7 @@ package com.johnny.store.service.impl;
 
 import com.johnny.store.constant.ResponseCodeConsts;
 import com.johnny.store.dto.DetailDTO;
+import com.johnny.store.dto.ReverseSequenceDTO;
 import com.johnny.store.entity.*;
 import com.johnny.store.manager.ConvertManager;
 import com.johnny.store.manager.UnifiedResponseManager;
@@ -97,6 +98,31 @@ public class DetailServiceImpl implements DetailService {
             DetailEntity entity =  detailMapper.searchImageMemo(bankID, branchID, itemID, textMapDetail);
             DetailVO model = convertEntityToVo(entity);
             return UnifiedResponseManager.buildSuccessResponse(model != null ? 1 : 0, model);
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+            return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);
+        }
+    }
+
+    @Override
+    public UnifiedResponse reverseSequence(ReverseSequenceDTO dto) {
+        try {
+            DetailEntity entity1 = detailMapper.search(dto.getFirstDetailID());
+            DetailEntity entity2 = detailMapper.search(dto.getSecondDetailID());
+            if(entity1 == null){
+                return UnifiedResponseManager.buildSuccessResponseWithID(0, dto.getFirstDetailID());
+            }
+            if(entity2 == null){
+                return UnifiedResponseManager.buildSuccessResponseWithID(0, dto.getSecondDetailID());
+            }
+            int tempSequence = entity1.getSequence();
+            entity1.setSequence(entity2.getSequence());
+            entity1.setLastEditUser(dto.getLoginUser());
+            entity2.setSequence(tempSequence);
+            entity2.setLastEditUser(dto.getLoginUser());
+
+            int affectCount = detailMapper.updateSequence(entity1) + detailMapper.updateSequence(entity2);
+            return UnifiedResponseManager.buildSuccessResponse(affectCount);
         } catch (Exception ex) {
             logger.error(ex.toString());
             return UnifiedResponseManager.buildFailedResponse(ResponseCodeConsts.UnKnownException);

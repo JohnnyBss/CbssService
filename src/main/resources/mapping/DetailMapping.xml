@@ -133,7 +133,8 @@
     FROM `Detail`
     WHERE BankID = #{arg0,jdbcType=INTEGER}
       AND BranchID = #{arg1,jdbcType=INTEGER}
-      AND ItemID = #{arg2,jdbcType=INTEGER};
+      AND ItemID = #{arg2,jdbcType=INTEGER}
+    ORDER BY Sequence;
   </select>
 
   <insert id="insert" useGeneratedKeys="true" keyProperty="detailID" parameterType="com.johnny.store.entity.DetailEntity" >
@@ -166,6 +167,14 @@
       #{lastEditUser, jdbcType=VARCHAR}
     )
   </insert>
+
+  <update id="updateSequence" parameterType="com.johnny.store.entity.DetailEntity" >
+    UPDATE cbss.detail SET
+      Sequence = #{sequence, jdbcType=INTEGER},
+      LastEditUser = #{lastEditUser, jdbcType=VARCHAR}
+    WHERE DetailID = #{detailID, jdbcType=INTEGER}
+  </update>
+
   <delete id="deleteAll" parameterType="java.lang.Integer" >
     DELETE FROM `Detail`
     WHERE BankID = #{arg0,jdbcType=INTEGER}
